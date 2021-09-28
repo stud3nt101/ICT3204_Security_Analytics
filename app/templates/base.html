@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+    <head>
+
+        {# Start of metadata #}
+        {% block head_meta %}
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+            <meta name="description" content="Security Analytics Project 1">
+            <meta name="author" content="eggfriedrice">
+            <meta name="robots" content="noindex, nofollow">
+        {% endblock head_meta %}
+        {# End of metadata #}
+
+        <title>IDK | {% block title %}{% endblock title %}</title>
+
+        {# Start of CSS #}
+        {% block head_css %}
+            {% block additional_css %}
+            {% endblock additional_css %}
+
+            {# Fonts and OneUI framework #}
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+            <link rel="stylesheet" id="css-main" href="{{ url_for('static', filename='css/oneui.min.css') }}">
+            <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}"> -->
+
+            <link rel="stylesheet" id="css-theme" href="{{ url_for('static', filename='css/smooth.min.css') }}">
+
+            {# Additional Imports #}
+
+        {% endblock head_css %}
+        {# End of CSS #}
+    </head>
+    <body>
+        <!-- Page container -->
+        <div id="page-container" class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-narrow">
+            <!-- Side navigation bar -->
+            <nav id="sidebar" aria-label="Main Navigation">
+                <!-- Side Header -->
+                <div class="content-header">
+                    <!-- Logo -->
+                    <a class="fw-semibold text-dual" href="index.html">
+                        <span class="smini-visible">
+                            <i class="fa fa-circle-notch text-primary"></i>
+                        </span>
+                        <span class="smini-hide fs-5 tracking-wider">One<span class="fw-normal">UI</span></span>
+                    </a>
+                    <!-- END Logo -->
+                    <div>
+                        <!-- Close Sidebar, Visible only on mobile screens -->
+                        <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
+                        <a class="d-lg-none btn btn-sm btn-alt-secondary ms-1" data-toggle="layout" data-action="sidebar_close" href="javascript:void(0)">
+                          <i class="fa fa-fw fa-times"></i>
+                        </a>
+                    </div>
+                    <!-- END Close Sidebar -->
+                </div>
+                <!-- END Side Header -->
+
+                <!-- Sidebar Scrolling -->
+                <div class="js-sidebar-scroll">
+                    <!-- Side Navigation -->
+                    <div class="content-side">
+                        <ul class="nav-main">
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="{{ url_for('upload') }}">
+                                    <i class="nav-main-link-icon fa fa-upload"></i>
+                                    <span class="nav-main-link-name">Upload</span>
+                                </a>
+                            </li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="{{ url_for('dashboard') }}">
+                                    <i class="nav-main-link-icon si si-speedometer"></i>
+                                    <span class="nav-main-link-name">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="nav-main-item">
+                                <a class="nav-main-link" href="#">
+                                    <i class="nav-main-link-icon fas fa-poll"></i>
+                                    <span class="nav-main-link-name">Anomalies</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <!-- END Side Navigation -->
+                </div>
+                <!-- END Sidebar Scrolling -->
+            </nav>
+            <!-- END Side navigation bar -->
+
+            {# Start of Header #}
+                {% include 'header.html' %}
+            {# End of Header #}
+
+            <!-- ********************************************************************************
+                                                MAIN CONTENT
+            ************************************************************************************* -->
+
+            {# Start of Main Container #}
+                {% block content %}
+                {% endblock %}
+            {# End of Main Container #}
+
+        </div>
+        <!-- End of Page Container -->
+        <script src="{{ url_for('static', filename='js/oneui.app.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+
+        {% block additional_js %}
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,332 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block additional_css %}
+<!-- Stylesheets -->
+    <!-- Page JS Plugins CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/css/buttons.bootstrap5.min.css') }}">
+{% endblock additional_css %}
+
+<!--main content start-->
+{% block content %}
+
+{% block header %}
+{% endblock header %}
+
+<!-- Main Container -->
+<main id="main-container">
+    <!-- Hero -->
+    <div class="bg-body-light">
+        <div class="content content-full">
+            <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+                <div class="flex-grow-1">
+                    <h1 class="h3 fw-bold mb-2">Filename.PCAP</h1>
+                    <h2 class="fs-base lh-base fw-medium text-muted mb-0">PCAP file results</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END Hero -->
+
+    <!-- Page Content -->
+    <div class="content">
+
+        <!-- Quick Overview -->
+          <div class="row">
+            <div class="col-6 col-lg-3">
+              <a class="block block-rounded block-link-shadow text-center" href="be_pages_ecom_orders.html">
+                <div class="block-content block-content-full">
+                  <div class="fs-2 fw-semibold">1132738</div>
+                </div>
+                <div class="block-content py-2 bg-body-light">
+                  <p class="fw-medium fs-sm text-muted mb-0">
+                    Total Packets
+                  </p>
+                </div>
+              </a>
+            </div>
+            <div class="col-6 col-lg-3">
+              <a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
+                <div class="block-content block-content-full">
+                  <div class="fs-2 fw-semibold">33%</div>
+                </div>
+                <div class="block-content py-2 bg-body-light">
+                  <p class="fw-medium fs-sm text-muted mb-0">
+                    Profit
+                  </p>
+                </div>
+              </a>
+            </div>
+            <div class="col-6 col-lg-3">
+              <a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
+                <div class="block-content block-content-full">
+                  <div class="fs-2 fw-semibold text-dark">109</div>
+                </div>
+                <div class="block-content py-2 bg-body-light">
+                  <p class="fw-medium fs-sm text-muted mb-0">
+                    Orders Today
+                  </p>
+                </div>
+              </a>
+            </div>
+            <div class="col-6 col-lg-3">
+              <a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
+                <div class="block-content block-content-full">
+                  <div class="fs-2 fw-semibold text-dark">$8920</div>
+                </div>
+                <div class="block-content py-2 bg-body-light">
+                  <p class="fw-medium fs-sm text-muted mb-0">
+                    Earnings Today
+                  </p>
+                </div>
+              </a>
+            </div>
+          </div>
+          <!-- END Quick Overview -->
+
+        <!-- Chart.js Charts are initialized in js/pages/be_comp_charts.min.js which was auto compiled from _js/pages/be_comp_charts.js -->
+        <!-- For more info and examples you can check out http://www.chartjs.org/docs/ -->
+        <h2 class="content-heading">Graphs</h2>
+        <div class="row">
+            <div class="col-xl-6">
+                <!-- Pie Chart -->
+                <div class="block block-rounded">
+                    <div class="block-header block-header-default">
+                        <h3 class="block-title">Incoming packets - protocol</h3>
+                    </div>
+                    <div class="block-content block-content-full text-center">
+                        <div class="py-3 px-xxl-8">
+                            <!-- Pie Chart Container -->
+                            <canvas id="donut_traffic"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Pie Chart -->
+            </div>
+            <div class="col-xl-6">
+                <!-- Donut Chart -->
+                <div class="block block-rounded">
+                    <div class="block-header block-header-default">
+                        <h3 class="block-title">Incoming packets - IP address</h3>
+                    </div>
+                    <div class="block-content block-content-full text-center">
+                        <div class="py-3 px-xxl-8">
+                            <!-- Donut Chart Container -->
+                            <canvas id="js-chartjs-donut"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Donut Chart -->
+            </div>
+            <div class="col-xl-12">
+                <!-- Bars Chart -->
+                <div class="block block-rounded">
+                      <div class="block-header block-header-default">
+                          <h3 class="block-title">Bars</h3>
+                      </div>
+                      <div class="block-content block-content-full text-center">
+                          <div class="py-1">
+                              <!-- Bars Chart Container -->
+                              <canvas id="js-chartjs-bars"></canvas>
+                          </div>
+                      </div>
+                </div>
+                <!-- END Bars Chart -->
+            </div>
+        </div>
+        <!-- END Chart.js Charts -->
+
+        <h2 class="content-heading">Table of data</h2>
+
+        <!-- Dynamic Table Simple -->
+        <div class="block block-rounded">
+            <div class="block-header block-header-default">
+                <h3 class="block-title">Network Packets <small>Full list of packets captured</small></h3>
+            </div>
+            <div class="block-content block-content-full">
+                <!-- DataTables init on table by adding .js-dataTable-simple class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
+                <table class="table table-bordered table-striped table-vcenter js-dataTable-simple">
+                  <thead>
+                    <tr>
+                      <th class="text-center">Timestamp</th>
+                      <th>Name</th>
+                      <th class="d-none d-sm-table-cell" style="width: 30%;">IP address</th>
+                      <th class="d-none d-sm-table-cell" style="width: 15%;">Access</th>
+                      <th style="width: 15%;">Registered</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-center fs-sm">1</td>
+                      <td class="fw-semibold fs-sm">Danielle Jones</td>
+                      <td class="d-none d-sm-table-cell fs-sm">
+                        client1<span class="text-muted">@example.com</span>
+                      </td>
+                      <td class="d-none d-sm-table-cell">
+                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Business</span>
+                      </td>
+                      <td>
+                        <span class="text-muted fs-sm">7 days ago</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center fs-sm">2</td>
+                      <td class="fw-semibold fs-sm">Henry Harrison</td>
+                      <td class="d-none d-sm-table-cell fs-sm">
+                        client2<span class="text-muted">@example.com</span>
+                      </td>
+                      <td class="d-none d-sm-table-cell">
+                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-danger-light text-danger">Disabled</span>
+                      </td>
+                      <td>
+                        <span class="text-muted fs-sm">7 days ago</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center fs-sm">3</td>
+                      <td class="fw-semibold fs-sm">Carl Wells</td>
+                      <td class="d-none d-sm-table-cell fs-sm">
+                        client3<span class="text-muted">@example.com</span>
+                      </td>
+                      <td class="d-none d-sm-table-cell">
+                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Trial</span>
+                      </td>
+                      <td>
+                        <span class="text-muted fs-sm">7 days ago</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center fs-sm">4</td>
+                      <td class="fw-semibold fs-sm">Jesse Fisher</td>
+                      <td class="d-none d-sm-table-cell fs-sm">
+                        client4<span class="text-muted">@example.com</span>
+                      </td>
+                      <td class="d-none d-sm-table-cell">
+                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Trial</span>
+                      </td>
+                      <td>
+                        <span class="text-muted fs-sm">9 days ago</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center fs-sm">5</td>
+                      <td class="fw-semibold fs-sm">Brian Stevens</td>
+                      <td class="d-none d-sm-table-cell fs-sm">
+                        client5<span class="text-muted">@example.com</span>
+                      </td>
+                      <td class="d-none d-sm-table-cell">
+                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">VIP</span>
+                      </td>
+                      <td>
+                        <span class="text-muted fs-sm">5 days ago</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center fs-sm">6</td>
+                      <td class="fw-semibold fs-sm">Barbara Scott</td>
+                      <td class="d-none d-sm-table-cell fs-sm">
+                        client6<span class="text-muted">@example.com</span>
+                      </td>
+                      <td class="d-none d-sm-table-cell">
+                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">VIP</span>
+                      </td>
+                      <td>
+                        <span class="text-muted fs-sm">10 days ago</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center fs-sm">7</td>
+                      <td class="fw-semibold fs-sm">Susan Day</td>
+                      <td class="d-none d-sm-table-cell fs-sm">
+                        client7<span class="text-muted">@example.com</span>
+                      </td>
+                      <td class="d-none d-sm-table-cell">
+                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Business</span>
+                      </td>
+                      <td>
+                        <span class="text-muted fs-sm">9 days ago</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center fs-sm">8</td>
+                      <td class="fw-semibold fs-sm">Melissa Rice</td>
+                      <td class="d-none d-sm-table-cell fs-sm">
+                        client8<span class="text-muted">@example.com</span>
+                      </td>
+                      <td class="d-none d-sm-table-cell">
+                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Business</span>
+                      </td>
+                      <td>
+                        <span class="text-muted fs-sm">2 days ago</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center fs-sm">9</td>
+                      <td class="fw-semibold fs-sm">Jose Wagner</td>
+                      <td class="d-none d-sm-table-cell fs-sm">
+                        client9<span class="text-muted">@example.com</span>
+                      </td>
+                      <td class="d-none d-sm-table-cell">
+                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">VIP</span>
+                      </td>
+                      <td>
+                        <span class="text-muted fs-sm">4 days ago</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center fs-sm">10</td>
+                      <td class="fw-semibold fs-sm">Alice Moore</td>
+                      <td class="d-none d-sm-table-cell fs-sm">
+                        client10<span class="text-muted">@example.com</span>
+                      </td>
+                      <td class="d-none d-sm-table-cell">
+                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Business</span>
+                      </td>
+                      <td>
+                        <span class="text-muted fs-sm">10 days ago</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center fs-sm">11</td>
+                      <td class="fw-semibold fs-sm">Carol White</td>
+                      <td class="d-none d-sm-table-cell fs-sm">
+                        client11<span class="text-muted">@example.com</span>
+                      </td>
+                      <td class="d-none d-sm-table-cell">
+                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Trial</span>
+                      </td>
+                      <td>
+                        <span class="text-muted fs-sm">9 days ago</span>
+                      </td>
+                    </tr>
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- END Dynamic Table Simple -->
+
+    </div>
+    <!-- END Page Content -->
+</main>
+<!-- END Main Container -->
+{% endblock content %}
+
+{% block additional_js %}
+    <!-- Page JS Plugins -->
+    <script src="{{ url_for('static', filename='js/plugins/jquery.easypiechart.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/chart.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/buttons.bootstrap5.min.js') }}"></script>
+
+    <!-- Page JS Code -->
+    <script src="{{ url_for('static', filename='js/be_comp_charts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/be_tables_datatables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/donut1.js') }}"></script>
+
+    <!-- Page JS Helpers (Easy Pie Chart + jQuery Sparkline Plugins) -->
+    <script>One.helpersOnLoad(['jq-easy-pie-chart', 'jq-sparkline']);</script>
+{% endblock additional_js %}
