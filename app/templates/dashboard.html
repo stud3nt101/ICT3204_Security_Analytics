@@ -316,10 +316,8 @@
 {% block additional_js %}
     <script>
         var donut2_data = JSON.parse('{{ ip | tojson | safe}}');
-        console.log(donut2_data);
     </script>
     <!-- Page JS Plugins -->
-    <script src="{{ url_for('static', filename='js/plugins/jquery.easypiechart.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/plugins/chart.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/plugins/jquery.dataTables.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/plugins/dataTables.bootstrap5.min.js') }}"></script>
@@ -332,6 +330,4 @@
     <script src="{{ url_for('static', filename='js/donut2.js') }}"></script>
     <script src="{{ url_for('static', filename='js/barchart.js') }}"></script>
 
-    <!-- Page JS Helpers (Easy Pie Chart + jQuery Sparkline Plugins) -->
-    <script>One.helpersOnLoad(['jq-easy-pie-chart', 'jq-sparkline']);</script>
 {% endblock additional_js %}
