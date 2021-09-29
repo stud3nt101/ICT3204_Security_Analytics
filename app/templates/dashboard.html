@@ -6,7 +6,7 @@
 <!-- Stylesheets -->
     <!-- Page JS Plugins CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap5.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/css/buttons.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.bootstrap5.min.css') }}">
 {% endblock additional_css %}
 
 <!--main content start-->
@@ -97,7 +97,7 @@
                         <h3 class="block-title">Incoming packets - protocol</h3>
                     </div>
                     <div class="block-content block-content-full text-center">
-                        <div class="py-3 px-xxl-8">
+                        <div class="px-xl-7">
                             <!-- Pie Chart Container -->
                             <canvas id="donut_traffic"></canvas>
                         </div>
@@ -112,9 +112,9 @@
                         <h3 class="block-title">Incoming packets - IP address</h3>
                     </div>
                     <div class="block-content block-content-full text-center">
-                        <div class="py-3 px-xxl-8">
+                        <div class="px-xl-7">
                             <!-- Donut Chart Container -->
-                            <canvas id="js-chartjs-donut"></canvas>
+                            <canvas id="donut_ip"></canvas>
                         </div>
                     </div>
                 </div>
@@ -129,7 +129,7 @@
                       <div class="block-content block-content-full text-center">
                           <div class="py-1">
                               <!-- Bars Chart Container -->
-                              <canvas id="js-chartjs-bars"></canvas>
+                              <canvas id="barchart"></canvas>
                           </div>
                       </div>
                 </div>
@@ -323,9 +323,10 @@
     <script src="{{ url_for('static', filename='js/plugins/buttons.bootstrap5.min.js') }}"></script>
 
     <!-- Page JS Code -->
-    <script src="{{ url_for('static', filename='js/be_comp_charts.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/be_tables_datatables.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/donut1.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/donut2.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/barchart.js') }}"></script>
 
     <!-- Page JS Helpers (Easy Pie Chart + jQuery Sparkline Plugins) -->
     <script>One.helpersOnLoad(['jq-easy-pie-chart', 'jq-sparkline']);</script>
