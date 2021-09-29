@@ -36,9 +36,9 @@
         <!-- Quick Overview -->
           <div class="row">
             <div class="col-6 col-lg-3">
-              <a class="block block-rounded block-link-shadow text-center" href="be_pages_ecom_orders.html">
+              <a class="block block-rounded block-link-shadow text-center" href="#">
                 <div class="block-content block-content-full">
-                  <div class="fs-2 fw-semibold">1132738</div>
+                  <div class="fs-2 fw-semibold ">1132738</div>
                 </div>
                 <div class="block-content py-2 bg-body-light">
                   <p class="fw-medium fs-sm text-muted mb-0">
@@ -50,11 +50,11 @@
             <div class="col-6 col-lg-3">
               <a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
                 <div class="block-content block-content-full">
-                  <div class="fs-2 fw-semibold">33%</div>
+                  <div class="fs-2 fw-semibold text-danger">458</div>
                 </div>
                 <div class="block-content py-2 bg-body-light">
                   <p class="fw-medium fs-sm text-muted mb-0">
-                    Profit
+                    Compromised Packets
                   </p>
                 </div>
               </a>
@@ -154,7 +154,7 @@
                       <th>Name</th>
                       <th class="d-none d-sm-table-cell" style="width: 30%;">IP address</th>
                       <th class="d-none d-sm-table-cell" style="width: 15%;">Access</th>
-                      <th style="width: 15%;">Registered</th>
+                      <th style="width: 15%;">Compromised</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -314,6 +314,10 @@
 {% endblock content %}
 
 {% block additional_js %}
+    <script>
+        var donut2_data = JSON.parse('{{ ip | tojson | safe}}');
+        console.log(donut2_data);
+    </script>
     <!-- Page JS Plugins -->
     <script src="{{ url_for('static', filename='js/plugins/jquery.easypiechart.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/plugins/chart.min.js') }}"></script>

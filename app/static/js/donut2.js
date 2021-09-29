@@ -1,17 +1,22 @@
 var dom = document.getElementById("donut_ip");
+var dataset = donut2_data;
+var parsedData= [];
+var parsedLabel = [];
+
+
+console.log(Object.keys(dataset)[1])
+
+for (var i = 0; i < Object.keys(dataset).length; i++) {
+    parsedLabel.push(Object.keys(dataset)[i],)
+    parsedData.push(parseInt(Object.values(dataset)[i]))
+}
+
 var myChart = new Chart(dom, {
     type: 'doughnut',
-    data: { labels: [
-        '192.168.1.2',
-        '172.10.3.1',
-        '172.10.3.2',
-        '172.10.2.5',
-        '172.10.3.8',
-        '172.10.3.10'
-    ],
+    data: { labels: parsedLabel,
     datasets: [{
         label: 'Data by service',
-        data: [50, 25, 18, 20, 13],
+        data: parsedData,
         backgroundColor: [
           '#2E2D4D',
           '#227C9D',

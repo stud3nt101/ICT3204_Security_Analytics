@@ -1,4 +1,5 @@
 var dom = document.getElementById("donut_traffic");
+
 var myChart = new Chart(dom, {
     type: 'doughnut',
     data: {labels: [
@@ -27,9 +28,7 @@ var myChart = new Chart(dom, {
         aspectRatio: 2,
         plugins: {
             legend: {
-                display: true,
-                position: 'right',
-                align: 'center',
+                position: 'right'
             }
 
         }
