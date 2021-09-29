@@ -83,5 +83,6 @@ for f in os.listdir(directory):
 sys.stdout.write('\n')
 sys.stdout.flush()
 
+print(summaries)
 # Print the dataset summary table.
 sys.stdout.write(binet_summary_to_md(summaries))
