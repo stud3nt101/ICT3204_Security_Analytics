@@ -137,7 +137,8 @@ dmypy.json
 /import
 
 #pickled file
-.pickle
+*.pickle
 
 #ml model
 xgbmodel
+
