@@ -130,3 +130,15 @@ dmypy.json
 
 #pcap folder
 /pcap
+
+#binetflow
+/binetflow
+/normal
+/import
+
+#pickled file
+*.pickle
+
+#ml model
+xgbmodel
+
