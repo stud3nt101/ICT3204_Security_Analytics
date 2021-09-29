@@ -134,3 +134,10 @@ dmypy.json
 #binetflow
 /binetflow
 /normal
+/import
+
+#pickled file
+.pickle
+
+#ml model
+xgbmodel

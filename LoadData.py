@@ -34,7 +34,6 @@ def loaddata(fileName, training = 0.8, testing = 0.2, label = False):
         
         for column in df:
             if column not in header:
-                print (column)
                 df.drop(column, axis=1)
         for index, row in df.iterrows(): 
             dur = row['Dur'] if row['Dur'] != 'nan' else  0
