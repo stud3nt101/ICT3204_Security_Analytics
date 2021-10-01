@@ -61,7 +61,6 @@ def loaddata(fileName, training = 0.8, testing = 0.2, label = False):
 
             try:
                 X_all.append([float(dur), protoDict[proto], int(Sport), int(Dport), Sip, Dip, int(totP), int(totB), stateDict[state]])
-                Y_all.append(label)
             except:
                 jesus+=1
                 continue
@@ -113,7 +112,6 @@ def loaddata(fileName, training = 0.8, testing = 0.2, label = False):
 
             X_all.append([float(dur), protoDict[proto], int(Sport), int(Dport), Sip, Dip, int(totP), int(totB), stateDict[state]])
             Y_all.append(label)
-
         except:
             jesus+=1
             continue

@@ -20,9 +20,9 @@ from xgboost.sklearn import XGBClassifier, XGBModel
 class ML_Prediction():
     def __init__(self) -> None:
         self.basepath = os.path.dirname(__file__)
-        self.dataset_path = os.path.abspath(os.path.join(self.basepath,".","binetflow"))
+        self.dataset_path = os.path.abspath(os.path.join(self.basepath,".","test"))
         self.directory = os.fsencode(self.dataset_path)
-        self.model = xgb.XGBClassifier(use_label_encoder=False)
+        self.model = xgb.XGBClassifier(use_label_encoder=False, scale_pos_weight = 0.007)
         pass
 
     def load_model(self, filename) -> XGBClassifier():
@@ -40,18 +40,20 @@ class ML_Prediction():
         file = open(os.path.join(self.basepath,'flowdata.pickle'), 'rb')
         data = pickle.load(file)
         X = data[0]
-        y = data[1]
+        print(len(X))
         pred = self.model.predict(X)
         count = 0 
         for i in pred:
             if i == 1: count += 1 
         verdict = True if count > (len(pred)*0.5) else False   
+        print(count)
         print(verdict)
         return verdict
         
 
     def create_model(self) -> XGBClassifier():
         print('Processing data set...')
+        progress = ''
         for count,f in enumerate (os.listdir(self.directory)):
             f_name = os.fsdecode(f)
             if f_name.endswith(".binetflow"):
@@ -60,14 +62,14 @@ class ML_Prediction():
             # just check really fast how we can read the Labels
                 p = os.path.join(self.dataset_path, f_name)
                 
-                LoadData.loaddata(p)
+                LoadData.loaddata(p, label=True)
                 file = open(os.path.join(self.basepath,'flowdata.pickle'), 'rb')
                 data = pickle.load(file)
 
                 X = data[0]
                 y = data[1]
 
-                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=123)
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=123)
                 
 
                 self.model.fit(X_train, y_train)
@@ -90,6 +92,7 @@ class ML_Prediction():
 
 if __name__ == "__main__":
     ML = ML_Prediction()
+    # ML.create_model()
     ML.load_model("xgbmodel")
     ML.prediction("secure-server.binetflow")
     
