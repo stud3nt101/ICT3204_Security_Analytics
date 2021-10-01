@@ -135,10 +135,23 @@ dmypy.json
 /binetflow
 /normal
 /import
+/test
 
 #pickled file
 *.pickle
 
 #ml model
 xgbmodel
-
+xgbmodel0
+xgbmodel1
+xgbmodel2
+xgbmodel3
+xgbmodel4
+xgbmodel5
+xgbmodel6
+xgbmodel7
+xgbmodel8
+xgbmodel9
+xgbmodel10
+xgbmodel11
+xgbmodel12

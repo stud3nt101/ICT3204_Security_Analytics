@@ -60,7 +60,8 @@ def loaddata(fileName, training = 0.8, testing = 0.2, label = False):
                 continue
 
             try:
-                X_all.append([float(dur), protoDict[proto], int(Sport), int(Dport), Sip, Dip, int(totP), int(totB), stateDict[state]])
+                X_all.append([float(dur), protoDict[proto], int(totP), int(totB), stateDict[state]])
+                # X_all.append([float(dur), protoDict[proto], int(Sport), int(Dport), Sip, Dip, int(totP), int(totB), stateDict[state]])
             except:
                 jesus+=1
                 continue
@@ -99,7 +100,8 @@ def loaddata(fileName, training = 0.8, testing = 0.2, label = False):
         try:
 
             if "Background" in label:
-                label=0
+                continue
+                # label=0
 
             elif "Normal" in label:
                 label = 0
@@ -110,7 +112,7 @@ def loaddata(fileName, training = 0.8, testing = 0.2, label = False):
             elif "CC" in label:
                 label = 1
 
-            X_all.append([float(dur), protoDict[proto], int(Sport), int(Dport), Sip, Dip, int(totP), int(totB), stateDict[state]])
+            X_all.append([float(dur), protoDict[proto], int(totP), int(totB), stateDict[state]])
             Y_all.append(label)
         except:
             jesus+=1
