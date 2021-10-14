@@ -4,17 +4,13 @@ import pickle
 import pandas as pd
 import numpy as np
 import os, sys
-# import datetime as dt
 import xgboost as xgb
 
+from xgboost import plot_tree
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from xgboost.sklearn import XGBClassifier, XGBModel
-# from sklearn import metrics
-# from sklearn.metrics import mean_squared_error
-# from sklearn.model_selection import KFold
-# from sklearn.model_selection import cross_val_score
-# from numpy.core.numeric import cross
 
 
 class ML_Prediction():
@@ -36,7 +32,12 @@ class ML_Prediction():
         
         return self.model
     
-    def prediction(self, filename) -> list:
+    def plot_model(self) -> None:
+        os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz/bin/'
+        plot_tree(self.model)
+        plt.show()
+    
+    def prediction(self, filename) -> list:      
         t_path = os.path.abspath(os.path.join(self.basepath,".","import"))
         p = os.path.join(t_path, filename)
         LoadData.loaddata(p)
@@ -54,8 +55,7 @@ class ML_Prediction():
         print(f"Bad: {count}")
         print (f"Good: {a}")
         print(f"Verdict: {verdict}")
-        return verdict
-        
+        return verdict    
 
     def create_model(self) -> XGBClassifier():
         print('Processing data set...')
@@ -74,7 +74,6 @@ class ML_Prediction():
 
                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=123)
                 
-
                 self.model.fit(X_train, y_train, xgb_model=self.bst)
 
                 y_pred = self.model.predict(X_test)
@@ -99,6 +98,9 @@ if __name__ == "__main__":
     # ML.create_model()
     
     #load a model and make prediction 
-    ML.load_model("xgbmodel12")
-    ML.prediction("secure-server.binetflow")
+    # ML.load_model("xgbmodel12")
+    # ML.prediction("secure-server.binetflow")
+
+    #plot decision tree
+    # ML.plot_model()
     

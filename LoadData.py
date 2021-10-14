@@ -96,7 +96,7 @@ def loaddata(fileName, training = 0.8, testing = 0.2, label = False):
         if Dport=='': 
             jesus+=1
             continue
-        #back, nor, bot
+        
         try:
 
             if "Background" in label:
@@ -122,33 +122,8 @@ def loaddata(fileName, training = 0.8, testing = 0.2, label = False):
     total = len(X_all)
     training_count_max = math.floor(training*total)
     testing_count_max = math.floor(testing*total)
-    print("jesus: ",jesus)
-    print(f"total: {total}\nlength x and y train: {len(X_train)} \t {len(Y_train)} \nlength x and y test: {len(X_test)} \t {len(Y_test)}")
   
     file = open('flowdata.pickle', 'wb')
     pickle.dump([np.array(X_all), np.array(Y_all)], file)
     return np.array(X_all), np.array(Y_all)
-    # else:
-    #     for i in range (len(X_all)):
-    #         if i < training_count_max:
-    #             X_train.append(X_all[i])
-    #             Y_train.append(Y_all[i])
-    #         else:
-    #             X_test.append(X_all[i])
-    #             Y_test.append(Y_all[i])
-    #     file = open('flowdata.pickle', 'wb')
-    #     pickle.dump([np.array(X_train), np.array(Y_train), np.array(X_test), np.array(Y_test)], file)
-    #     return np.array(X_train), np.array(Y_train), np.array(X_test), np.array(Y_test)
-
     
-
-    # print(f"testing_count: {testing_count} \n testing_count_max: {testing_count_max} \n jesus: {jesus}")
-
-    #pickle the dataset for fast loading
-    
-
-    #return the training and the test dataset
-    
-
-# if __name__ == "__main__":
-#     loaddata('flowdata.binetflow')
