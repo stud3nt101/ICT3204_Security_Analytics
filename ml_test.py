@@ -98,7 +98,7 @@ if __name__ == "__main__":
     # ML.create_model()
     
     #load a model and make prediction 
-    # ML.load_model("xgbmodel12")
+    # ML.load_model("model")
     # ML.prediction("secure-server.binetflow")
 
     #plot decision tree
