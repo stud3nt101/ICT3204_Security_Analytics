@@ -5,7 +5,7 @@
 {% block additional_css %}
 <!-- Stylesheets -->
     <!-- Page JS Plugins CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dataTables.bootstrap5.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.bootstrap5.min.css') }}">
 {% endblock additional_css %}
 
@@ -22,8 +22,7 @@
         <div class="content content-full">
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
                 <div class="flex-grow-1">
-                    <h1 class="h3 fw-bold mb-2">Filename.PCAP</h1>
-                    <h2 class="fs-base lh-base fw-medium text-muted mb-0">PCAP file results</h2>
+                    <h1 class="h3 fw-bold mb-2">Overview</h1>
                 </div>
             </div>
         </div>
@@ -32,7 +31,6 @@
 
     <!-- Page Content -->
     <div class="content">
-
         <!-- Quick Overview -->
           <div class="row">
             <div class="col-6 col-lg-3">
@@ -50,23 +48,11 @@
             <div class="col-6 col-lg-3">
               <a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
                 <div class="block-content block-content-full">
-                  <div class="fs-2 fw-semibold text-danger">458</div>
-                </div>
-                <div class="block-content py-2 bg-body-light">
-                  <p class="fw-medium fs-sm text-muted mb-0">
-                    Compromised Packets
-                  </p>
-                </div>
-              </a>
-            </div>
-            <div class="col-6 col-lg-3">
-              <a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
-                <div class="block-content block-content-full">
                   <div class="fs-2 fw-semibold text-dark">109</div>
                 </div>
                 <div class="block-content py-2 bg-body-light">
                   <p class="fw-medium fs-sm text-muted mb-0">
-                    Orders Today
+                    Total No. of Unique IPs
                   </p>
                 </div>
               </a>
@@ -78,7 +64,19 @@
                 </div>
                 <div class="block-content py-2 bg-body-light">
                   <p class="fw-medium fs-sm text-muted mb-0">
-                    Earnings Today
+                    ??
+                  </p>
+                </div>
+              </a>
+            </div>
+              <div class="col-6 col-lg-3">
+              <a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
+                <div class="block-content block-content-full">
+                  <div class="fs-2 fw-semibold text-danger">458</div>
+                </div>
+                <div class="block-content py-2 bg-body-light">
+                  <p class="fw-medium fs-sm text-muted mb-0">
+                    Compromised Packets
                   </p>
                 </div>
               </a>
@@ -94,7 +92,7 @@
                 <!-- Pie Chart -->
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
-                        <h3 class="block-title">Incoming packets - protocol</h3>
+                        <h3 class="block-title">Packet Count by Protocol</h3>
                     </div>
                     <div class="block-content block-content-full text-center">
                         <div class="px-xl-7">
@@ -109,7 +107,7 @@
                 <!-- Donut Chart -->
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
-                        <h3 class="block-title">Incoming packets - IP address</h3>
+                        <h3 class="block-title">Packet Count by TCP Flag</h3>
                     </div>
                     <div class="block-content block-content-full text-center">
                         <div class="px-xl-7">
@@ -124,7 +122,7 @@
                 <!-- Bars Chart -->
                 <div class="block block-rounded">
                       <div class="block-header block-header-default">
-                          <h3 class="block-title">Bars</h3>
+                          <h3 class="block-title">Packet Count by Time (10 min interval)</h3>
                       </div>
                       <div class="block-content block-content-full text-center">
                           <div class="py-1">
@@ -135,10 +133,25 @@
                 </div>
                 <!-- END Bars Chart -->
             </div>
+            <div class="col-xl-12">
+                <!-- Bubble Chart -->
+                <div class="block block-rounded">
+                      <div class="block-header block-header-default">
+                          <h3 class="block-title">Packet Count by Time (10 min interval)</h3>
+                      </div>
+                      <div class="block-content block-content-full text-center">
+                          <div class="py-1">
+                              <!-- Bars Chart Container -->
+                              <canvas id="bubblechart"></canvas>
+                          </div>
+                      </div>
+                </div>
+                <!-- END Bubble Chart -->
+            </div>
         </div>
         <!-- END Chart.js Charts -->
 
-        <h2 class="content-heading">Table of data</h2>
+        <h2 class="content-heading">PCAP File</h2>
 
         <!-- Dynamic Table Simple -->
         <div class="block block-rounded">
@@ -329,5 +342,6 @@
     <script src="{{ url_for('static', filename='js/donut1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/donut2.js') }}"></script>
     <script src="{{ url_for('static', filename='js/barchart.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bubblechart.js') }}"></script>
 
 {% endblock additional_js %}
