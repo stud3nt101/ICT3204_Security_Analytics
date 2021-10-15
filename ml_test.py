@@ -95,10 +95,10 @@ class ML_Prediction():
 if __name__ == "__main__":
     ML = ML_Prediction()
     # To train a model
-    # ML.create_model()
+    ML.create_model()
     
     #load a model and make prediction 
-    # ML.load_model("model")
+    # ML.load_model("xgbmodel")
     # ML.prediction("secure-server.binetflow")
 
     #plot decision tree

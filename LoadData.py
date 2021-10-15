@@ -78,8 +78,6 @@ def loaddata(fileName, label = False):
         sd = line[:-1].split(',')
         dur, proto, Sport, Dport, Sip, Dip, totP, totB, label, state = sd[1], sd[2], sd[4], sd[7], sd[3], sd[6], sd[-4], sd[-3], sd[-1], sd[8]
 
-        
-
         try:
             Sip = socket.inet_aton(Sip)
             Sip = struct.unpack("!L", Sip)[0]
@@ -103,7 +101,6 @@ def loaddata(fileName, label = False):
 
             if "Background" in label:
                 continue
-                # label=0
 
             elif "Normal" in label:
                 label = 0
@@ -122,8 +119,6 @@ def loaddata(fileName, label = False):
 
     
     total = len(X_all)
-    training_count_max = math.floor(training*total)
-    testing_count_max = math.floor(testing*total)
   
     file = open('flowdata.pickle', 'wb')
     pickle.dump([np.array(X_all), np.array(Y_all)], file)
@@ -161,8 +156,6 @@ def extract_data(fileName, SrcAddr, DstAddr):
         totB = row['TotBytes'] if row['TotBytes'] else 0
         if row['Label'] != 'nan' : label = row['Label'] 
         if row['State'] != 'nan' : state = row['State'] 
-
-
 
         if Sip == SrcAddr and Dip == DstAddr:
             value = data.get(f"{str(Sport)} -> {str(Dport)}","empty")
