@@ -51,7 +51,7 @@ class ML_Prediction():
         for i in pred:
             if i == 1: count += 1 
             else: a += 1
-        verdict = True if count > (len(pred)*0.8) else False   
+        verdict = True if count > (len(pred)*0.5) else False   
         print(f"Bad: {count}")
         print (f"Good: {a}")
         print(f"Verdict: {verdict}")
@@ -95,11 +95,11 @@ class ML_Prediction():
 if __name__ == "__main__":
     ML = ML_Prediction()
     # To train a model
-    ML.create_model()
+    # ML.create_model()
     
     #load a model and make prediction 
-    # ML.load_model("xgbmodel")
-    # ML.prediction("secure-server.binetflow")
+    ML.load_model("model")
+    ML.prediction("normal.binetflow")
 
     #plot decision tree
     # ML.plot_model()
