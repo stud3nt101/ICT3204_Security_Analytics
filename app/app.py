@@ -65,7 +65,7 @@ def upload():
         # require tshark
         # require argus-server
         # saved in a folder called upload(change name if needs be) 
-        system("tshark -r upload/" + pcap_file.filename + " -T fields -E header=y -E separator=, -E occurrence=a -E quote=d" 
+        system("tshark -r upload/" + pcap_file.filename + " -T fields -E header=y -E separator=, -E occurrence=a -E quote=s" 
         " -e frame.time -e _ws.col.Protocol -e _ws.col.Length -e tcp.flags -e ip.src -e tcp.srcport -e udp.srcport -e ip.dst" 
         " -e tcp.dstport -e udp.dstport -e _ws.col.Info > upload/temp.csv")
 
