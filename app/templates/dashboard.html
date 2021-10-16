@@ -72,11 +72,11 @@
               <div class="col-6 col-lg-3">
               <a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
                 <div class="block-content block-content-full">
-                  <div class="fs-2 fw-semibold text-danger">458</div>
+                  <div class="fs-2 fw-semibold text-danger">True</div>
                 </div>
                 <div class="block-content py-2 bg-body-light">
                   <p class="fw-medium fs-sm text-muted mb-0">
-                    Compromised Packets
+                    Potential attack
                   </p>
                 </div>
               </a>
@@ -137,12 +137,12 @@
                 <!-- Bubble Chart -->
                 <div class="block block-rounded">
                       <div class="block-header block-header-default">
-                          <h3 class="block-title">Packet Count by Time (10 min interval)</h3>
+                          <h3 class="block-title">Port communication visualization <small>(SOURCE PORT -> DESTINATION PORT)</small></h3>
                       </div>
                       <div class="block-content block-content-full text-center">
                           <div class="py-1">
                               <!-- Bars Chart Container -->
-                              <canvas id="bubblechart"></canvas>
+                              <div id="heatmap" style="width: 100%; height:400px;"></div>
                           </div>
                       </div>
                 </div>
@@ -197,123 +197,6 @@
                         <span class="text-muted fs-sm">7 days ago</span>
                       </td>
                     </tr>
-                    <tr>
-                      <td class="text-center fs-sm">3</td>
-                      <td class="fw-semibold fs-sm">Carl Wells</td>
-                      <td class="d-none d-sm-table-cell fs-sm">
-                        client3<span class="text-muted">@example.com</span>
-                      </td>
-                      <td class="d-none d-sm-table-cell">
-                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Trial</span>
-                      </td>
-                      <td>
-                        <span class="text-muted fs-sm">7 days ago</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-center fs-sm">4</td>
-                      <td class="fw-semibold fs-sm">Jesse Fisher</td>
-                      <td class="d-none d-sm-table-cell fs-sm">
-                        client4<span class="text-muted">@example.com</span>
-                      </td>
-                      <td class="d-none d-sm-table-cell">
-                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Trial</span>
-                      </td>
-                      <td>
-                        <span class="text-muted fs-sm">9 days ago</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-center fs-sm">5</td>
-                      <td class="fw-semibold fs-sm">Brian Stevens</td>
-                      <td class="d-none d-sm-table-cell fs-sm">
-                        client5<span class="text-muted">@example.com</span>
-                      </td>
-                      <td class="d-none d-sm-table-cell">
-                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">VIP</span>
-                      </td>
-                      <td>
-                        <span class="text-muted fs-sm">5 days ago</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-center fs-sm">6</td>
-                      <td class="fw-semibold fs-sm">Barbara Scott</td>
-                      <td class="d-none d-sm-table-cell fs-sm">
-                        client6<span class="text-muted">@example.com</span>
-                      </td>
-                      <td class="d-none d-sm-table-cell">
-                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">VIP</span>
-                      </td>
-                      <td>
-                        <span class="text-muted fs-sm">10 days ago</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-center fs-sm">7</td>
-                      <td class="fw-semibold fs-sm">Susan Day</td>
-                      <td class="d-none d-sm-table-cell fs-sm">
-                        client7<span class="text-muted">@example.com</span>
-                      </td>
-                      <td class="d-none d-sm-table-cell">
-                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Business</span>
-                      </td>
-                      <td>
-                        <span class="text-muted fs-sm">9 days ago</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-center fs-sm">8</td>
-                      <td class="fw-semibold fs-sm">Melissa Rice</td>
-                      <td class="d-none d-sm-table-cell fs-sm">
-                        client8<span class="text-muted">@example.com</span>
-                      </td>
-                      <td class="d-none d-sm-table-cell">
-                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Business</span>
-                      </td>
-                      <td>
-                        <span class="text-muted fs-sm">2 days ago</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-center fs-sm">9</td>
-                      <td class="fw-semibold fs-sm">Jose Wagner</td>
-                      <td class="d-none d-sm-table-cell fs-sm">
-                        client9<span class="text-muted">@example.com</span>
-                      </td>
-                      <td class="d-none d-sm-table-cell">
-                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">VIP</span>
-                      </td>
-                      <td>
-                        <span class="text-muted fs-sm">4 days ago</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-center fs-sm">10</td>
-                      <td class="fw-semibold fs-sm">Alice Moore</td>
-                      <td class="d-none d-sm-table-cell fs-sm">
-                        client10<span class="text-muted">@example.com</span>
-                      </td>
-                      <td class="d-none d-sm-table-cell">
-                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Business</span>
-                      </td>
-                      <td>
-                        <span class="text-muted fs-sm">10 days ago</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-center fs-sm">11</td>
-                      <td class="fw-semibold fs-sm">Carol White</td>
-                      <td class="d-none d-sm-table-cell fs-sm">
-                        client11<span class="text-muted">@example.com</span>
-                      </td>
-                      <td class="d-none d-sm-table-cell">
-                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Trial</span>
-                      </td>
-                      <td>
-                        <span class="text-muted fs-sm">9 days ago</span>
-                      </td>
-                    </tr>
                   </tbody>
               </table>
             </div>
@@ -329,6 +212,7 @@
 {% block additional_js %}
     <script>
         var donut2_data = JSON.parse('{{ ip | tojson | safe}}');
+        var bubblechart_data = JSON.parse('{{ port_count | safe }}');
     </script>
     <!-- Page JS Plugins -->
     <script src="{{ url_for('static', filename='js/plugins/chart.min.js') }}"></script>
@@ -336,12 +220,14 @@
     <script src="{{ url_for('static', filename='js/plugins/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/plugins/dataTables.buttons.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/plugins/buttons.bootstrap5.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/echarts.js') }}"></script>
 
     <!-- Page JS Code -->
     <script src="{{ url_for('static', filename='js/be_tables_datatables.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/donut1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/donut2.js') }}"></script>
     <script src="{{ url_for('static', filename='js/barchart.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bubblechart.js') }}"></script>
+<!--    <script src="{{ url_for('static', filename='js/bubblechart.js') }}"></script>-->
+    <script src="{{ url_for('static', filename='js/heatmap.js') }}"></script>
 
 {% endblock additional_js %}

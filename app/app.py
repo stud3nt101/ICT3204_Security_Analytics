@@ -1,8 +1,8 @@
 import json
-
 import logs
+import LoadData
 
-from flask import Flask, render_template, redirect, jsonify
+from flask import Flask, render_template, redirect, request, make_response
 
 app = Flask(__name__)
 
@@ -17,7 +17,8 @@ def home():
 @app.route('/dashboard')
 def dashboard():
     test_ip = {'192.10.3.2': "10", '172.10.3.2': "500", "172.10.3.1": "232", "172.10.5.1":"324"}
-    return render_template('dashboard.html', ip=test_ip)
+    bubble_data = LoadData.extract_data("./upload/secure-server.binetflow", "192.168.10.10", "172.16.1.2")
+    return render_template('dashboard.html', ip=test_ip, port_count=json.dumps(bubble_data))
 
 
 @app.route('/authlog')
