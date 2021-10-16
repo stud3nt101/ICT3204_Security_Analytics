@@ -3,6 +3,7 @@ from os import system
 
 import logs
 import LoadData
+import ml
 
 from flask import Flask, render_template, redirect, request
 
@@ -20,7 +21,10 @@ def home():
 def dashboard():
     test_ip = {'192.10.3.2': "10", '172.10.3.2': "500", "172.10.3.1": "232", "172.10.5.1":"324"}
     bubble_data = LoadData.extract_data("./upload/secure-server.binetflow", "192.168.10.10", "172.16.1.2", 50, "byte")
-    return render_template('dashboard.html', ip=test_ip, port_count=json.dumps(bubble_data))
+    mlclass = ml.ML_Prediction()
+    mlclass.load_model("model")
+    prediction = mlclass.prediction("./upload/secure-server.binetflow")
+    return render_template('dashboard.html', ip=test_ip, port_count=json.dumps(bubble_data), ml=prediction)
 
 
 @app.route('/dashboard', methods=["POST"])

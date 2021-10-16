@@ -38,9 +38,9 @@ class ML_Prediction():
         plt.show()
     
     def prediction(self, filename) -> list:      
-        t_path = os.path.abspath(os.path.join(self.basepath,".","upload"))
-        p = os.path.join(t_path, filename)
-        LoadData.loaddata(p)
+        # t_path = os.path.abspath(os.path.join(self.basepath,".","upload"))
+        # p = os.path.join(t_path, filename)
+        LoadData.loaddata(filename)
         file = open(os.path.join(self.basepath,'flowdata.pickle'), 'rb')
         data = pickle.load(file)
         X = data[0]
