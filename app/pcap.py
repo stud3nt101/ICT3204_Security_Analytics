@@ -71,19 +71,19 @@ def pcap(filname):
     ip_src_counts_dict.columns =['Src_IP_Addr','IP_Addr_Count']
     analysis_list.append(ip_src_counts_dict.to_dict('records'))
 
-    unique_src_dict = unique_src.reset_index()
-    unique_src_dict.columns =['Unique_Src_IP_Addr','IP_Addr_Count']
-    analysis_list.append(unique_src_dict.to_dict('records'))
-
-    unique_dst_dict = unique_dst.reset_index()
-    unique_dst_dict.columns =['Unique_Dst_IP_Addr','IP_Addr_Count']
-    analysis_list.append(unique_dst_dict.to_dict('records'))
+    # unique_src_dict = unique_src.reset_index()
+    # unique_src_dict.columns =['Unique_Src_IP_Addr','IP_Addr_Count']
+    # analysis_list.append(unique_src_dict.to_dict('records'))
+    #
+    # unique_dst_dict = unique_dst.reset_index()
+    # unique_dst_dict.columns =['Unique_Dst_IP_Addr','IP_Addr_Count']
+    # analysis_list.append(unique_dst_dict.to_dict('records'))
 
     pkt_length_counts_dict = pkt_length_counts.reset_index()
     pkt_length_counts_dict.columns =['Packets_Length','Packets_Length_Count']
     analysis_list.append(pkt_length_counts_dict.to_dict('records'))
 
-    return analysis_list
+    return analysis_list, table_dict
 
 '''
 ------------------

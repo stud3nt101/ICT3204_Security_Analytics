@@ -2,8 +2,8 @@ import json
 from os import system
 
 import logs
-import LoadData
-import ml
+import LoadData, ml
+import pcap
 
 from flask import Flask, render_template, redirect, request
 
@@ -24,6 +24,8 @@ def dashboard():
     mlclass = ml.ML_Prediction()
     mlclass.load_model("model")
     prediction = mlclass.prediction("./upload/secure-server.binetflow")
+    test = pcap.pcap("./upload/temp.csv")
+    print(test)
     return render_template('dashboard.html', ip=test_ip, port_count=json.dumps(bubble_data), ml=prediction)
 
 
