@@ -146,17 +146,15 @@ def extract_data(fileName, SrcAddr, DstAddr, top = None, key = None):
         sort_dict = {}
         for count, value in enumerate(sort_list):
             sort_dict[value[0]] = data[value[0]]
-
-        print(sort_dict)
         return sort_dict
 
     #Else return dict normally
     return data
-
-if __name__ == "__main__":
-    #testing (don't remove)
-    basepath = os.path.dirname(__file__)
-    dataset_path = os.path.abspath(os.path.join(basepath,".","upload"))
-    p = os.path.join(dataset_path, 'web-server.binetflow')
-    data = extract_data(p, "192.168.20.20", "10.10.10.10", 10, 'byte')
-    
+#
+# if __name__ == "__main__":
+#     #testing (don't remove)
+#     basepath = os.path.dirname(__file__)
+#     dataset_path = os.path.abspath(os.path.join(basepath,".","upload"))
+#     p = os.path.join(dataset_path, 'web-server.binetflow')
+#     data = extract_data(p, "192.168.20.20", "10.10.10.10", 10, 'byte')
+#

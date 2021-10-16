@@ -4,13 +4,13 @@ from os import system
 import logs
 import LoadData
 
-from flask import Flask, render_template, redirect, request, make_response, session
+from flask import Flask, render_template, redirect, request
 
 app = Flask(__name__)
 
 
 # Route for default page
-@app.route('/')
+@app.route('/', methods=["POST", "GET"])
 def home():
     return redirect('/dashboard')
 
@@ -18,12 +18,18 @@ def home():
 # Route for dashboard page
 @app.route('/dashboard')
 def dashboard():
-    src_ip = request.form['srcip']
-    dst_ip = request.form['dstip']
-    data_filter = request.form['filterdata']
     test_ip = {'192.10.3.2': "10", '172.10.3.2': "500", "172.10.3.1": "232", "172.10.5.1":"324"}
-    bubble_data = LoadData.extract_data("./upload/secure-server.binetflow", "192.168.10.10", "172.16.1.2")
+    bubble_data = LoadData.extract_data("./upload/secure-server.binetflow", "192.168.10.10", "172.16.1.2", 50, "byte")
     return render_template('dashboard.html', ip=test_ip, port_count=json.dumps(bubble_data))
+
+
+@app.route('/dashboard', methods=["POST"])
+def heatmapdata():
+    src_ip = str(request.form.get('srcip'))
+    dst_ip = request.form.get('dstip')
+    data_filter = request.form.get('filterdata')
+    bubble_data = LoadData.extract_data("./upload/secure-server.binetflow", src_ip, dst_ip, 50, data_filter)
+    return json.dumps(bubble_data)
 
 
 @app.route('/authlog')

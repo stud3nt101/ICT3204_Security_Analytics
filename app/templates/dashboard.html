@@ -140,36 +140,37 @@
                           <h3 class="block-title">Port communication visualization <small>(SOURCE PORT -> DESTINATION PORT)</small></h3>
                       </div>
                       <div class="block-content block-content-full">
-                          <form action="{{ url_for('dashboard') }}" method="POST">
-                          <div class="row">
-                              <div class="col-lg-4 col-xl-4">
+                          <form action="/" method="POST" name="heatmap_filter" id="hm_filter">
+                          <div class="row" style="vertical-align:center">
+                              <div class="col-lg-4 col-xl-3">
                                 <div class="mb-4">
                                   <label class="form-label" for="srcip-select">Source IP</label>
                                   <select class="form-select" id="srcip-select" name="srcip">
-                                    <option selected>Open this select menu</option>
-                                    <option value="192.168.10.10">Option #1</option>
-                                    <option value="192.168.30.31">Option #2</option>
+                                    <option value="192.168.10.10">192.168.10.10</option>
+                                    <option value="192.168.30.31">192.168.30.31</option>
                                   </select>
                                 </div>
                               </div>
-                              <div class="col-lg-4 col-xl-4">
+                              <div class="col-lg-4 col-xl-3">
                                 <div class="mb-4">
                                   <label class="form-label" for="dstip-select">Destination IP</label>
                                   <select class="form-select" id="dstip-select" name="dstip">
-                                    <option selected>Open this select menu</option>
                                     <option value="172.16.1.2">172.16.1.2</option>
                                   </select>
                                 </div>
                               </div>
-                              <div class="col-lg-4 col-xl-4">
+                              <div class="col-lg-4 col-xl-3">
                                 <div class="mb-4">
                                   <label class="form-label" for="data-select">Data</label>
                                   <select class="form-select" id="data-select" name="filterdata">
-                                    <option value="2">Total packet</option>
-                                    <option value="3">Total duration</option>
-                                    <option value="4">Total byte</option>
+                                    <option value="packet">Total packet</option>
+                                    <option value="dur">Total duration</option>
+                                    <option value="byte">Total byte</option>
                                   </select>
                                 </div>
+                              </div>
+                              <div class="col-lg-4 col-xl-3">
+                                  <button type="button" class="btn btn-secondary" type="submit" for="heatmap_filter" onclick="filter();">Submit</button>
                               </div>
                           </div>
                           </form>
@@ -260,7 +261,7 @@
     <script src="{{ url_for('static', filename='js/donut1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/donut2.js') }}"></script>
     <script src="{{ url_for('static', filename='js/barchart.js') }}"></script>
-<!--    <script src="{{ url_for('static', filename='js/bubblechart.js') }}"></script>-->
     <script src="{{ url_for('static', filename='js/heatmap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/heatmap_form.js') }}"></script>
 
 {% endblock additional_js %}
