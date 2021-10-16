@@ -1,8 +1,10 @@
 import json
+from os import system
+
 import logs
 import LoadData
 
-from flask import Flask, render_template, redirect, request, make_response
+from flask import Flask, render_template, redirect, request, make_response, session
 
 app = Flask(__name__)
 
@@ -16,6 +18,9 @@ def home():
 # Route for dashboard page
 @app.route('/dashboard')
 def dashboard():
+    src_ip = request.form['srcip']
+    dst_ip = request.form['dstip']
+    data_filter = request.form['filterdata']
     test_ip = {'192.10.3.2': "10", '172.10.3.2': "500", "172.10.3.1": "232", "172.10.5.1":"324"}
     bubble_data = LoadData.extract_data("./upload/secure-server.binetflow", "192.168.10.10", "172.16.1.2")
     return render_template('dashboard.html', ip=test_ip, port_count=json.dumps(bubble_data))
@@ -38,3 +43,38 @@ def histlog():
 @app.route('/upload')
 def upload():
     return render_template('upload.html')
+
+
+@app.route('/json', methods=['POST'])
+def upload_file():
+    pcap_file = request.files['pcap']
+    log_file = request.files['file']
+    log_file2 = request.files['file2']
+
+    print("hello")
+    # pcap save
+    if pcap_file.filename != '':
+        pcap_file.save("upload/" + pcap_file.filename)
+
+        # require tshark
+        # require argus-server
+        # saved in a folder called upload(change name if needs be)
+        system(
+            "tshark -r upload/" + pcap_file.filename + " -T fields -E header=y -E separator=, -E occurrence=a -E quote=d"
+                                                       " -e frame.time -e _ws.col.Protocol -e _ws.col.Length -e tcp.flags -e ip.src -e tcp.srcport -e udp.srcport -e ip.dst"
+                                                       " -e tcp.dstport -e udp.dstport -e _ws.col.Info > upload/test.csv")
+
+        # precreate an empty asd.biargus file, idk why also, but kk say do it
+        system(
+            "argus -F utils/argus.conf -r upload/" + pcap_file.filename + "  -w asd.biargus | ra -r asd.biargus -n -F utils/ra.conf -Z b > upload/file.binetflow")
+
+    # log file 1 save
+    print(log_file.filename)
+    if log_file.filename != '':
+        log_file.save("upload/" + log_file.filename)
+
+    # log file 2 save
+    if log_file2.filename != '':
+        log_file2.save("upload/" + log_file2.filename)
+
+    return render_template('json.html')
