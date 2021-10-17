@@ -69,7 +69,7 @@
                 </div>
               </a>
             </div>
-              <div class="col-6 col-lg-3">
+              <div class="col-6 col-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Top Tooltip">
               <a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
                 <div class="block-content block-content-full">
                   <div class="fs-2 fw-semibold text-danger">{{ml}}</div>
@@ -224,32 +224,30 @@
             </div>
             <div class="block-content block-content-full">
                 <!-- DataTables init on table by adding .js-dataTable-simple class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
-                <table class="table table-bordered table-striped table-vcenter js-dataTable-simple">
+                <table class="table table-bordered table-striped table-vcenter js-dataTable-full">
                   <thead>
                     <tr>
                       <th class="text-center">Timestamp</th>
                       <th>Protocol</th>
-                      <th class="d-none d-sm-table-cell" style="width: 30%;">Src IP</th>
-                      <th class="d-none d-sm-table-cell" style="width: 15%;">Dst IP</th>
+                      <th class="d-none d-sm-table-cell">Length</th>
+                      <th class="d-none d-sm-table-cell">TCP Flags</th>
+                      <th class="d-none d-sm-table-cell" style="width: 10%;">Src IP</th>
+                      <th class="d-none d-sm-table-cell" style="width: 10%;">Dst IP</th>
                       <th style="width: 30%;">Info</th>
                     </tr>
                   </thead>
                   <tbody>
+                    {% for data in pcapdata %}
                     <tr>
-                      <td class="text-center fs-sm">1</td>
-                      <td class="fw-semibold fs-sm">Danielle Jones</td>
-                      <td class="d-none d-sm-table-cell fs-sm">
-                        client1<span class="text-muted">@example.com</span>
-                      </td>
-                      <td class="d-none d-sm-table-cell">
-                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Business</span>
-                      </td>
-                      <td>
-                        <span class="text-muted fs-sm">7 days ago</span>
-                      </td>
+                        <td>{{data["frame.time"]}}</td>
+                        <td>{{data["_ws.col.Protocol"]}}</td>
+                        <td>{{data["_ws.col.Length"]}}</td>
+                        <td>{{data["tcp.flags"]}}</td>
+                        <td>{{data["ip.src"]}}</td>
+                        <td>{{data["ip.dst"]}}</td>
+                        <td>{{data["_ws.col.Info"]}}</td>
                     </tr>
-
-
+                    {% endfor %}
                   </tbody>
               </table>
             </div>
