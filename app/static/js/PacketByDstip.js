@@ -1,9 +1,8 @@
-var dom = document.getElementById("PacketByTime");
-var dataset = packetbytime_data;
+var dom = document.getElementById("PacketByDstip");
+var dataset = packetbydstip_data;
 var parsedData= [];
 var parsedLabel = [];
-
-var datas = [];
+var datas = []
 
 for (var i = 0; i < Object.keys(dataset).length; i++) {
     datas.push({
@@ -15,6 +14,7 @@ for (var i = 0; i < Object.keys(dataset).length; i++) {
     })
 }
 
+
 var myChart = new Chart(dom, {
     type: 'bar',
     data: {
@@ -22,6 +22,6 @@ var myChart = new Chart(dom, {
         datasets: datas,
     },
     options: {
-        aspectRatio: 3,
+        indexAxis: 'y',
     }
 })

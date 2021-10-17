@@ -19,14 +19,16 @@ def home():
 # Route for dashboard page
 @app.route('/dashboard')
 def dashboard():
-    test_ip = {'192.10.3.2': "10", '172.10.3.2': "500", "172.10.3.1": "232", "172.10.5.1":"324"}
     bubble_data = LoadData.extract_data("./upload/secure-server.binetflow", "192.168.10.10", "172.16.1.2", 50, "byte")
     mlclass = ml.ML_Prediction()
     mlclass.load_model("model")
     prediction = mlclass.prediction("./upload/secure-server.binetflow")
-    test = pcap.pcap("./upload/temp.csv")
-    print(test)
-    return render_template('dashboard.html', ip=test_ip, port_count=json.dumps(bubble_data), ml=prediction)
+    graph_data, table_data = pcap.pcap_analysis("./upload/temp.csv")
+    print(table_data)
+    return render_template('dashboard.html', port_count=json.dumps(bubble_data), ml=prediction, pcapdata=table_data,
+                           ip=json.dumps(graph_data[1]), proto=json.dumps(graph_data[0]), total_packet=json.dumps(graph_data[5].get('Packets')),
+                           total_ip=json.dumps(graph_data[6].get('Unique_IP')), packet_srcip=json.dumps(graph_data[3]),
+                           packet_dstip=json.dumps(graph_data[4]), packet_time=json.dumps(graph_data[2]))
 
 
 @app.route('/dashboard', methods=["POST"])
@@ -42,6 +44,7 @@ def heatmapdata():
 def authlog():
     # Change file
     log_data, col = logs.authlog("./Logs/webserver_auth.log")
+    print(log_data)
     return render_template('auth_logs.html', col=col, logdata=log_data)
 
 

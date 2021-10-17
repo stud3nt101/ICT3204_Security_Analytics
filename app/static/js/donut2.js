@@ -3,9 +3,6 @@ var dataset = donut2_data;
 var parsedData= [];
 var parsedLabel = [];
 
-
-console.log(Object.keys(dataset)[1])
-
 for (var i = 0; i < Object.keys(dataset).length; i++) {
     parsedLabel.push(Object.keys(dataset)[i],)
     parsedData.push(parseInt(Object.values(dataset)[i]))

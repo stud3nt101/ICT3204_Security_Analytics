@@ -36,7 +36,7 @@
             <div class="col-6 col-lg-3">
               <a class="block block-rounded block-link-shadow text-center" href="#">
                 <div class="block-content block-content-full">
-                  <div class="fs-2 fw-semibold ">1132738</div>
+                  <div class="fs-2 fw-semibold ">{{total_packet}}</div>
                 </div>
                 <div class="block-content py-2 bg-body-light">
                   <p class="fw-medium fs-sm text-muted mb-0">
@@ -48,7 +48,7 @@
             <div class="col-6 col-lg-3">
               <a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
                 <div class="block-content block-content-full">
-                  <div class="fs-2 fw-semibold text-dark">109</div>
+                  <div class="fs-2 fw-semibold text-dark">{{total_ip}}</div>
                 </div>
                 <div class="block-content py-2 bg-body-light">
                   <p class="fw-medium fs-sm text-muted mb-0">
@@ -127,14 +127,44 @@
                       <div class="block-content block-content-full text-center">
                           <div class="py-1">
                               <!-- Bars Chart Container -->
-                              <canvas id="barchart"></canvas>
+                              <canvas id="PacketByTime"></canvas>
                           </div>
                       </div>
                 </div>
                 <!-- END Bars Chart -->
             </div>
             <div class="col-xl-12">
-                <!-- Bubble Chart -->
+                <!-- Bars Chart -->
+                <div class="block block-rounded">
+                      <div class="block-header block-header-default">
+                          <h3 class="block-title">Packet Count by Source IP</h3>
+                      </div>
+                      <div class="block-content block-content-full text-center">
+                          <div class="py-1">
+                              <!-- Bars Chart Container -->
+                              <canvas id="PacketBySrcip"></canvas>
+                          </div>
+                      </div>
+                </div>
+                <!-- END Bars Chart -->
+            </div>
+            <div class="col-xl-12">
+                <!-- Bars Chart -->
+                <div class="block block-rounded">
+                      <div class="block-header block-header-default">
+                          <h3 class="block-title">Packet Count by Destination IP</h3>
+                      </div>
+                      <div class="block-content block-content-full text-center">
+                          <div class="py-1">
+                              <!-- Bars Chart Container -->
+                              <canvas id="PacketByDstip"></canvas>
+                          </div>
+                      </div>
+                </div>
+                <!-- END Bars Chart -->
+            </div>
+            <div class="col-xl-12">
+                <!-- Heatmap -->
                 <div class="block block-rounded">
                       <div class="block-header block-header-default">
                           <h3 class="block-title">Port communication visualization <small>(SOURCE PORT -> DESTINATION PORT)</small></h3>
@@ -161,7 +191,7 @@
                               </div>
                               <div class="col-lg-4 col-xl-3">
                                 <div class="mb-4">
-                                  <label class="form-label" for="data-select">Data</label>
+                                  <label class="form-label" for="data-select">Sort (Top 50)</label>
                                   <select class="form-select" id="data-select" name="filterdata">
                                     <option value="packet">Total packet</option>
                                     <option value="dur">Total duration</option>
@@ -180,7 +210,7 @@
                           </div>
                       </div>
                 </div>
-                <!-- END Bubble Chart -->
+                <!-- END Heatmap -->
             </div>
         </div>
         <!-- END Chart.js Charts -->
@@ -218,19 +248,8 @@
                         <span class="text-muted fs-sm">7 days ago</span>
                       </td>
                     </tr>
-                    <tr>
-                      <td class="text-center fs-sm">2</td>
-                      <td class="fw-semibold fs-sm">Henry Harrison</td>
-                      <td class="d-none d-sm-table-cell fs-sm">
-                        client2<span class="text-muted">@example.com</span>
-                      </td>
-                      <td class="d-none d-sm-table-cell">
-                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-danger-light text-danger">Disabled</span>
-                      </td>
-                      <td>
-                        <span class="text-muted fs-sm">7 days ago</span>
-                      </td>
-                    </tr>
+
+
                   </tbody>
               </table>
             </div>
@@ -245,8 +264,12 @@
 
 {% block additional_js %}
     <script>
-        var donut2_data = JSON.parse('{{ ip | tojson | safe}}');
+        var donut2_data = JSON.parse('{{ ip | safe}}');
         var bubblechart_data = JSON.parse('{{ port_count | safe }}');
+        var donut1_data = JSON.parse('{{ proto | safe }}');
+        var packetbysrcip_data = JSON.parse('{{ packet_srcip | safe }}');
+        var packetbydstip_data = JSON.parse('{{ packet_dstip | safe }}');
+        var packetbytime_data = JSON.parse('{{ packet_time | safe }}');
     </script>
     <!-- Page JS Plugins -->
     <script src="{{ url_for('static', filename='js/plugins/chart.min.js') }}"></script>
@@ -261,6 +284,8 @@
     <script src="{{ url_for('static', filename='js/donut1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/donut2.js') }}"></script>
     <script src="{{ url_for('static', filename='js/barchart.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/PacketBySrcip.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/PacketByDstip.js') }}"></script>
     <script src="{{ url_for('static', filename='js/heatmap.js') }}"></script>
     <script src="{{ url_for('static', filename='js/heatmap_form.js') }}"></script>
 
