@@ -25,9 +25,16 @@ var myChart = new Chart(dom, {
           '#17C3B2',
           '#83B692',
           '#A6B1E1',
-          '#EEC8E0'
+          '#EEC8E0',
+          '#CC2936',
+          '#136F63',
+          '#CAE7B9',
+          '#E7EB90',
+          '#826251',
+          '#FF7F11'
     ],
-    hoverOffset: 4
+    hoverOffset: 4,
+    borderWidth: 0,
   }]},
     options: {
         aspectRatio: 2,

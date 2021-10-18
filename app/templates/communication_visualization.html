@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block additional_css %}
+<!-- Stylesheets -->
+    <!-- Page JS Plugins CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.bootstrap5.min.css') }}">
+{% endblock additional_css %}
+
+<!--main content start-->
+{% block content %}
+
+{% block header %}
+{% endblock header %}
+
+<!-- Main Container -->
+<main id="main-container">
+
+    <!-- Page Content -->
+    <div class="content">
+        <h2 class="content-heading">PCAP File</h2>
+
+        <div class="col-xl-12">
+                <!-- Heatmap -->
+                <div class="block block-rounded">
+                      <div class="block-header block-header-default">
+                          <h3 class="block-title">Port communication visualization <small>(SOURCE PORT -> DESTINATION PORT)</small></h3>
+                      </div>
+                      <div class="block-content block-content-full">
+                          <form action="/portcomm" method="POST" name="heatmap_filter" id="hm_filter">
+                          <div class="row" style="vertical-align:center">
+                              <div class="col-lg-4 col-xl-3">
+                                <div class="mb-4">
+                                  <label class="form-label" for="srcip-select">Source IP</label>
+                                  <select class="form-select" id="srcip-select" name="srcip">
+                                      {% for data in srcip_list %}
+                                      <option value="192.168.10.10">{{data}}</option>
+                                      {% endfor %}
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-lg-4 col-xl-3">
+                                <div class="mb-4">
+                                  <label class="form-label" for="dstip-select">Destination IP</label>
+                                  <select class="form-select" id="dstip-select" name="dstip">
+                                    <option value="172.16.1.2">172.16.1.2</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-lg-4 col-xl-3">
+                                <div class="mb-4">
+                                  <label class="form-label" for="data-select">Sort (Top 50)</label>
+                                  <select class="form-select" id="data-select" name="filterdata">
+                                    <option value="packet">Total packet</option>
+                                    <option value="dur">Total duration</option>
+                                    <option value="byte">Total byte</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-lg-4 col-xl-3">
+                                  <button type="button" class="btn btn-secondary" type="submit" for="heatmap_filter" onclick="filter();">Submit</button>
+                              </div>
+                          </div>
+                          </form>
+                          <div class="py-1">
+                              <!-- Bars Chart Container -->
+                              <div id="heatmap" style="width: 100%; height:400px;"></div>
+                          </div>
+                      </div>
+                </div>
+                <!-- END Heatmap -->
+            </div>
+
+    </div>
+    <!-- END Page Content -->
+</main>
+<!-- END Main Container -->
+{% endblock content %}
+
+{% block additional_js %}
+    <script>
+        var heatmap_data = JSON.parse('{{ port_count | safe }}');
+    </script>
+    <!-- Page JS Plugins -->
+    <script src="{{ url_for('static', filename='js/plugins/echarts.js') }}"></script>
+
+    <!-- Page JS Code -->
+    <script src="{{ url_for('static', filename='js/heatmap.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/heatmap_form.js') }}" defer></script>
+{% endblock additional_js %}

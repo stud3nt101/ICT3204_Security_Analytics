@@ -95,7 +95,7 @@
                         <h3 class="block-title">Packet Count by Protocol</h3>
                     </div>
                     <div class="block-content block-content-full text-center">
-                        <div class="px-xl-7">
+                        <div class="px-xl-12">
                             <!-- Pie Chart Container -->
                             <canvas id="donut_traffic"></canvas>
                         </div>
@@ -110,7 +110,7 @@
                         <h3 class="block-title">Packet Count by TCP Flag</h3>
                     </div>
                     <div class="block-content block-content-full text-center">
-                        <div class="px-xl-7">
+                        <div class="px-xl-12">
                             <!-- Donut Chart Container -->
                             <canvas id="donut_ip"></canvas>
                         </div>
@@ -137,9 +137,26 @@
                 <!-- Bars Chart -->
                 <div class="block block-rounded">
                       <div class="block-header block-header-default">
-                          <h3 class="block-title">Packet Count by Source IP</h3>
+                          <h3 class="block-title">Packet Count by Source IP (Top 5)</h3>
                       </div>
                       <div class="block-content block-content-full text-center">
+                          <form name="countbysrc_filter" id="pcbysrc_filter">
+                          <div class="row" style="vertical-align:center">
+                              <div class="col-lg-4 col-xl-3">
+                                <div class="mb-4">
+                                  <label class="form-label" for="srcip_top">Source IP</label>
+                                  <select class="form-select" id="srcip_top" name="srcip">
+                                      <option value="5">Top 5</option>
+                                      <option value="10">Top 10</option>
+                                      <option value="15">Top 15</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-lg-4 col-xl-3">
+                                  <button type="button" class="btn btn-secondary" type="submit" for="countbysrc_filter">Submit</button>
+                              </div>
+                          </div>
+                          </form>
                           <div class="py-1">
                               <!-- Bars Chart Container -->
                               <canvas id="PacketBySrcip"></canvas>
@@ -152,9 +169,26 @@
                 <!-- Bars Chart -->
                 <div class="block block-rounded">
                       <div class="block-header block-header-default">
-                          <h3 class="block-title">Packet Count by Destination IP</h3>
+                          <h3 class="block-title">Packet Count by Destination IP (Top 5)</h3>
                       </div>
                       <div class="block-content block-content-full text-center">
+                          <form name="countbydst_filter" id="pcbydst_filter">
+                          <div class="row" style="vertical-align:center">
+                              <div class="col-lg-4 col-xl-3">
+                                <div class="mb-4">
+                                  <label class="form-label" for="dstip_top">Source IP</label>
+                                  <select class="form-select" id="dstip_top" name="srcip">
+                                      <option value="5">Top 5</option>
+                                      <option value="10">Top 10</option>
+                                      <option value="15">Top 15</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-lg-4 col-xl-3">
+                                  <button type="button" class="btn btn-secondary" type="submit" for="countbydst_filter">Submit</button>
+                              </div>
+                          </div>
+                          </form>
                           <div class="py-1">
                               <!-- Bars Chart Container -->
                               <canvas id="PacketByDstip"></canvas>
@@ -163,96 +197,9 @@
                 </div>
                 <!-- END Bars Chart -->
             </div>
-            <div class="col-xl-12">
-                <!-- Heatmap -->
-                <div class="block block-rounded">
-                      <div class="block-header block-header-default">
-                          <h3 class="block-title">Port communication visualization <small>(SOURCE PORT -> DESTINATION PORT)</small></h3>
-                      </div>
-                      <div class="block-content block-content-full">
-                          <form action="/" method="POST" name="heatmap_filter" id="hm_filter">
-                          <div class="row" style="vertical-align:center">
-                              <div class="col-lg-4 col-xl-3">
-                                <div class="mb-4">
-                                  <label class="form-label" for="srcip-select">Source IP</label>
-                                  <select class="form-select" id="srcip-select" name="srcip">
-                                    <option value="192.168.10.10">192.168.10.10</option>
-                                    <option value="192.168.30.31">192.168.30.31</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="col-lg-4 col-xl-3">
-                                <div class="mb-4">
-                                  <label class="form-label" for="dstip-select">Destination IP</label>
-                                  <select class="form-select" id="dstip-select" name="dstip">
-                                    <option value="172.16.1.2">172.16.1.2</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="col-lg-4 col-xl-3">
-                                <div class="mb-4">
-                                  <label class="form-label" for="data-select">Sort (Top 50)</label>
-                                  <select class="form-select" id="data-select" name="filterdata">
-                                    <option value="packet">Total packet</option>
-                                    <option value="dur">Total duration</option>
-                                    <option value="byte">Total byte</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="col-lg-4 col-xl-3">
-                                  <button type="button" class="btn btn-secondary" type="submit" for="heatmap_filter" onclick="filter();">Submit</button>
-                              </div>
-                          </div>
-                          </form>
-                          <div class="py-1">
-                              <!-- Bars Chart Container -->
-                              <div id="heatmap" style="width: 100%; height:400px;"></div>
-                          </div>
-                      </div>
-                </div>
-                <!-- END Heatmap -->
-            </div>
+
         </div>
         <!-- END Chart.js Charts -->
-
-        <h2 class="content-heading">PCAP File</h2>
-
-        <!-- Dynamic Table Simple -->
-        <div class="block block-rounded">
-            <div class="block-header block-header-default">
-                <h3 class="block-title">Network Packets <small>Full list of packets captured</small></h3>
-            </div>
-            <div class="block-content block-content-full">
-                <!-- DataTables init on table by adding .js-dataTable-simple class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
-                <table class="table table-bordered table-striped table-vcenter js-dataTable-full">
-                  <thead>
-                    <tr>
-                      <th class="text-center">Timestamp</th>
-                      <th>Protocol</th>
-                      <th class="d-none d-sm-table-cell">Length</th>
-                      <th class="d-none d-sm-table-cell">TCP Flags</th>
-                      <th class="d-none d-sm-table-cell" style="width: 10%;">Src IP</th>
-                      <th class="d-none d-sm-table-cell" style="width: 10%;">Dst IP</th>
-                      <th style="width: 30%;">Info</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for data in pcapdata %}
-                    <tr>
-                        <td>{{data["frame.time"]}}</td>
-                        <td>{{data["_ws.col.Protocol"]}}</td>
-                        <td>{{data["_ws.col.Length"]}}</td>
-                        <td>{{data["tcp.flags"]}}</td>
-                        <td>{{data["ip.src"]}}</td>
-                        <td>{{data["ip.dst"]}}</td>
-                        <td>{{data["_ws.col.Info"]}}</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-              </table>
-            </div>
-          </div>
-          <!-- END Dynamic Table Simple -->
 
     </div>
     <!-- END Page Content -->
@@ -263,7 +210,6 @@
 {% block additional_js %}
     <script>
         var donut2_data = JSON.parse('{{ ip | safe}}');
-        var bubblechart_data = JSON.parse('{{ port_count | safe }}');
         var donut1_data = JSON.parse('{{ proto | safe }}');
         var packetbysrcip_data = JSON.parse('{{ packet_srcip | safe }}');
         var packetbydstip_data = JSON.parse('{{ packet_dstip | safe }}');
@@ -271,20 +217,12 @@
     </script>
     <!-- Page JS Plugins -->
     <script src="{{ url_for('static', filename='js/plugins/chart.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/plugins/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/plugins/dataTables.bootstrap5.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/plugins/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/plugins/buttons.bootstrap5.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/plugins/echarts.js') }}"></script>
 
     <!-- Page JS Code -->
-    <script src="{{ url_for('static', filename='js/be_tables_datatables.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/donut1.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/donut2.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/barchart.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/PacketBySrcip.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/PacketByDstip.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/heatmap.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/heatmap_form.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/donut1.js') }}" async></script>
+    <script src="{{ url_for('static', filename='js/donut2.js') }}" async></script>
+    <script src="{{ url_for('static', filename='js/barchart.js') }}" async></script>
+    <script src="{{ url_for('static', filename='js/PacketBySrcip.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/PacketByDstip.js') }}" defer></script>
 
 {% endblock additional_js %}

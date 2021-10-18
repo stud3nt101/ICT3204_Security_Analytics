@@ -2,7 +2,7 @@ var chartDom = document.getElementById('heatmap');
 var myChart = echarts.init(chartDom);
 var option;
 
-dataset = bubblechart_data;
+dataset = heatmap_data;
 
 function heatmap(datas){
     var keys = Object.keys(datas);

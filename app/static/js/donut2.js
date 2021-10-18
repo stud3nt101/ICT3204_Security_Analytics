@@ -24,7 +24,8 @@ var myChart = new Chart(dom, {
           '#A6B1E1',
           '#EEC8E0'
     ],
-    hoverOffset: 4
+    hoverOffset: 4,
+    borderWidth: 0,
   }]},
     options: {
         aspectRatio: 2,

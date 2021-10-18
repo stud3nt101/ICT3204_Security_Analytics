@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block additional_css %}
+<!-- Stylesheets -->
+    <!-- Page JS Plugins CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.bootstrap5.min.css') }}">
+{% endblock additional_css %}
+
+<!--main content start-->
+{% block content %}
+
+{% block header %}
+{% endblock header %}
+
+<!-- Main Container -->
+<main id="main-container">
+
+    <!-- Page Content -->
+    <div class="content">
+        <h2 class="content-heading">PCAP File</h2>
+
+        <!-- Dynamic Table Simple -->
+        <div class="block block-rounded">
+            <div class="block-header block-header-default">
+                <h3 class="block-title">Network Packets <small>Full list of packets captured</small></h3>
+            </div>
+            <div class="block-content block-content-full">
+                <!-- DataTables init on table by adding .js-dataTable-simple class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
+                <table class="table table-bordered table-striped table-vcenter js-dataTable-full">
+                  <thead>
+                    <tr>
+                      <th class="text-center">Timestamp</th>
+                      <th>Protocol</th>
+                      <th class="d-none d-sm-table-cell">Length</th>
+                      <th class="d-none d-sm-table-cell">TCP Flags</th>
+                      <th class="d-none d-sm-table-cell" style="width: 10%;">Src IP</th>
+                      <th class="d-none d-sm-table-cell" style="width: 10%;">Dst IP</th>
+                      <th style="width: 30%;">Info</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for data in pcapdata %}
+                    <tr>
+                        <td>{{data["frame.time"]}}</td>
+                        <td>{{data["_ws.col.Protocol"]}}</td>
+                        <td>{{data["_ws.col.Length"]}}</td>
+                        <td>{{data["tcp.flags"]}}</td>
+                        <td>{{data["ip.src"]}}</td>
+                        <td>{{data["ip.dst"]}}</td>
+                        <td>{{data["_ws.col.Info"]}}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- END Dynamic Table Simple -->
+
+    </div>
+    <!-- END Page Content -->
+</main>
+<!-- END Main Container -->
+{% endblock content %}
+
+{% block additional_js %}
+    <!-- Page JS Plugins -->
+    <script src="{{ url_for('static', filename='js/plugins/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/dataTables.buttons.min.js') }}"></script>
+
+    <!-- Page JS Code -->
+    <script src="{{ url_for('static', filename='js/be_tables_datatables.min.js') }}"></script>
+{% endblock additional_js %}

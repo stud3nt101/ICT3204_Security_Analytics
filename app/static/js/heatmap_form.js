@@ -3,7 +3,7 @@ var form = document.getElementById('hm_filter');
 function filter(){
     $.ajax({
         type:'POST',
-        url:'/dashboard',
+        url:'/portcomm',
         data:{
           srcip:$("#srcip-select").val(),
           dstip:$("#dstip-select").val(),
