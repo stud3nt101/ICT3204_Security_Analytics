@@ -128,14 +128,16 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#pcap folder
+#pcap
+*.capng
+*.pcap
 /pcap
 
 #binetflow
 /binetflow
 /normal
 /import
-/test
+
 
 #pickled file
 *.pickle
