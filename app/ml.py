@@ -99,7 +99,7 @@ if __name__ == "__main__":
     
     #load a model and make prediction 
     ML.load_model("model")
-    test = ML.prediction("normal.binetflow")
+    test = ML.prediction("temp.binetflow")
 
     #plot decision tree
     # ML.plot_model()

@@ -85,4 +85,7 @@ def pcap_analysis(filname):
 
     return analysis_list, table_dict
 
-pcap_analysis('upload/temp.csv')
+try:
+    pcap_analysis('upload/temp.csv')
+except:
+    pass
