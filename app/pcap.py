@@ -84,3 +84,5 @@ def pcap_analysis(filname):
     analysis_list.append(dict(pkt_length_counts_dict.values))
 
     return analysis_list, table_dict
+
+pcap_analysis('upload/temp.csv')

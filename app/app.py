@@ -1,6 +1,8 @@
 import json
 from os import system
 
+from pandas.io.parsers import TextParser
+
 import logs
 import LoadData, ml
 import pcap
@@ -9,6 +11,11 @@ from flask import Flask, render_template, redirect, request
 
 app = Flask(__name__)
 
+temp_file = []
+
+ALLOWED_EXTENSIONS = set(['pcapng','log'])
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Route for default page
 @app.route('/', methods=["POST", "GET"])
@@ -64,13 +71,59 @@ def histlog():
     log_data, col = logs.histlog(".\Logs\webserver_history_with_TS.log")
     return render_template('hist_logs.html', col=col, logdata=log_data)
 
+@app.route('/upload-process', methods=["POST","GET"])
+def upload_process():
+    data = request.files['file']
+    if allowed_file(data.filename):
+        print(data.filename)
+        temp_file.append(data)
+        print(temp_file)
+        return render_template('upload.html')
+    else:
+        return redirect('upload.html')
 
 # Route for upload page
-@app.route('/upload')
+@app.route('/upload-complete', methods=["POST","GET"])
+def upload_complete():
+    check = None
+    for file in temp_file:
+        if file.filename.rsplit('.', 1)[1].lower() == "pcapng":
+            check = 1
+            break
+            
+    if len(temp_file) != 0 and check != None:
+        for file in temp_file:
+            if file.filename.rsplit('.', 1)[1].lower() == "pcapng":
+                # require tshark
+                # require argus-server
+                # saved in a folder called upload(change name if needs be) 
+                system("tshark -r upload/" + file.filename + " -T fields -E header=y -E separator=, -E occurrence=a -E quote=s" 
+                " -e frame.time -e _ws.col.Protocol -e _ws.col.Length -e tcp.flags -e ip.src -e tcp.srcport -e udp.srcport -e ip.dst" 
+                " -e tcp.dstport -e udp.dstport -e _ws.col.Info > upload/temp.csv")
+
+                #precreate an empty asd.biargus file, idk why also, but kk say do it
+                system("argus -F utils/argus.conf -r upload/" + file.filename + " -w temp.biargus | ra -r temp.biargus -n -F utils/ra.conf -Z b > upload/temp.binetflow")
+            
+            elif file.filename.rsplit('.', 1)[1].lower() == "log":
+                if file.filename != '':
+                    file.save("upload/"+file.filename)
+
+        temp_file.clear()
+        return redirect('/dashboard')
+    else:
+        temp_file.clear()
+        return render_template('upload.html')
+
+# Route for upload page
+@app.route('/upload', methods=["POST","GET"])
 def upload():
+
+    return render_template('upload.html')
     pcap_file = request.files['pcap']
     log_file = request.files['file']
     log_file2 = request.files['file2']
+
+    
 
     # pcap save
     if pcap_file.filename != '':

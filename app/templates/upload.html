@@ -43,13 +43,12 @@
                         <div class="col-12">
                             <div class="dropdown col">
                                 <button type="button" class="btn btn-outline-secondary dropdown-toggle col-12" id="dropdown-default-outline-secondary" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Data source
+                                    Data source - PCAP file is mandatory; Log files are optional
                                 </button>
                                 <div class="dropdown-menu fs-sm col-12" aria-labelledby="dropdown-default-outline-secondary">
                                     <a class="dropdown-item" href="javascript:void(0)">PCAP</a>
-                                    <a class="dropdown-item" href="javascript:void(0)">SSH Log (AUTH.LOG)</a>
+                                    <a class="dropdown-item" href="javascript:void(0)">SSH/Auth Log (Optional)</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="javascript:void(0)">Something else here</a>
                                 </div>
                             </div>
                         </div>
@@ -61,12 +60,12 @@
                     <div class="row mb-4">
                         <div class="col-lg-12 col-xl-12">
                             <!-- DropzoneJS Container -->
-                            <form class="dropzone" action="be_forms_plugins.html"></form>
+                            <form class="dropzone" action="/upload-process" name="file"></form>
                         </div>
                     </div>
                     <!-- END Dropzone -->
                     <div class="mb-2 text-center">
-                        <button type="button" class="btn btn-primary">
+                        <button type="button" class="btn btn-primary" onclick="location.href='/upload-complete'">
                             <i class="fa fa-fw fa-upload me-1"></i> Upload
                         </button>
                     </div>
