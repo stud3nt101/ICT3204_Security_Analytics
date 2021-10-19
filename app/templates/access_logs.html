@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}History Logs{% endblock title %}
+{% block title %}Access Logs{% endblock title %}
 
 {% block additional_css %}
 <!-- Stylesheets -->
@@ -35,17 +35,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {% for data in logdata %}
-                    <tr>
-                        {% for col in col %}
-                        {% if col != "command" %}
-                            <td class="text-center">{{ data[col] }}</td>
-                        {% else %}
-                            <td>{{ data[col] }}</td>
-                        {% endif %}
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
+
                   </tbody>
               </table>
             </div>
