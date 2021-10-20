@@ -45,7 +45,9 @@
                                 <div class="mb-4">
                                   <label class="form-label" for="dstip-select">Destination IP</label>
                                   <select class="form-select" id="dstip-select" name="dstip">
-                                    <option value="172.16.1.2">172.16.1.2</option>
+                                      {% for data in dstip_list %}
+                                        <option value={{data}}>{{data}}</option>
+                                      {% endfor %}
                                   </select>
                                 </div>
                               </div>
