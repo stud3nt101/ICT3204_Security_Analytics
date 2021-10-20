@@ -36,7 +36,7 @@
                                   <label class="form-label" for="srcip-select">Source IP</label>
                                   <select class="form-select" id="srcip-select" name="srcip">
                                       {% for data in srcip_list %}
-                                      <option value="192.168.10.10">{{data}}</option>
+                                      <option value={{data}}>{{data}}</option>
                                       {% endfor %}
                                   </select>
                                 </div>

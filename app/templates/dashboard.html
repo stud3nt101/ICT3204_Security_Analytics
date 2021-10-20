@@ -33,7 +33,7 @@
     <div class="content">
         <!-- Quick Overview -->
           <div class="row">
-            <div class="col-6 col-lg-3">
+            <div class="col-6 col-lg-4">
               <a class="block block-rounded block-link-shadow text-center" href="#">
                 <div class="block-content block-content-full">
                   <div class="fs-2 fw-semibold ">{{total_packet}}</div>
@@ -45,7 +45,7 @@
                 </div>
               </a>
             </div>
-            <div class="col-6 col-lg-3">
+            <div class="col-6 col-lg-4">
               <a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
                 <div class="block-content block-content-full">
                   <div class="fs-2 fw-semibold text-dark">{{total_ip}}</div>
@@ -57,22 +57,15 @@
                 </div>
               </a>
             </div>
-            <div class="col-6 col-lg-3">
+              <div class="col-6 col-lg-4" data-bs-toggle="tooltip" data-bs-placement="top"
+                   title="This will be flagged as True if our Machine Learning algorithm detects a potential compromise in the given PCAP file.">
               <a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
                 <div class="block-content block-content-full">
-                  <div class="fs-2 fw-semibold text-dark">$8920</div>
-                </div>
-                <div class="block-content py-2 bg-body-light">
-                  <p class="fw-medium fs-sm text-muted mb-0">
-                    ??
-                  </p>
-                </div>
-              </a>
-            </div>
-              <div class="col-6 col-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Top Tooltip">
-              <a class="block block-rounded block-link-shadow text-center" href="javascript:void(0)">
-                <div class="block-content block-content-full">
-                  <div class="fs-2 fw-semibold text-danger">{{ml}}</div>
+                    {% if ml == True %}
+                        <div class="fs-2 fw-semibold text-danger">{{ml}}</div>
+                    {% else %}
+                        <div class="fs-2 fw-semibold">{{ml}}</div>
+                    {% endif %}
                 </div>
                 <div class="block-content py-2 bg-body-light">
                   <p class="fw-medium fs-sm text-muted mb-0">
@@ -137,14 +130,14 @@
                 <!-- Bars Chart -->
                 <div class="block block-rounded">
                       <div class="block-header block-header-default">
-                          <h3 class="block-title">Packet Count by Source IP (Top 5)</h3>
+                          <h3 class="block-title">Packet Count by IP</h3>
                       </div>
                       <div class="block-content block-content-full text-center">
-                          <form name="countbysrc_filter" id="pcbysrc_filter">
+                          <form name="countbyip_filter" id="pcbyip_filter" action="/dashboard" method="POST">
                           <div class="row" style="vertical-align:center">
                               <div class="col-lg-4 col-xl-3">
                                 <div class="mb-4">
-                                  <select class="form-select" id="srcip_top" name="srcip">
+                                  <select class="form-select" id="top" name="top">
                                       <option value="5">Top 5</option>
                                       <option value="10">Top 10</option>
                                       <option value="15">Top 15</option>
@@ -152,44 +145,21 @@
                                 </div>
                               </div>
                               <div class="col-lg-4 col-xl-3">
-                                  <button type="button" class="btn btn-secondary" type="submit" for="countbysrc_filter">Submit</button>
-                              </div>
-                          </div>
-                          </form>
-                          <div class="py-1">
-                              <!-- Bars Chart Container -->
-                              <canvas id="PacketBySrcip"></canvas>
-                          </div>
-                      </div>
-                </div>
-                <!-- END Bars Chart -->
-            </div>
-            <div class="col-xl-12">
-                <!-- Bars Chart -->
-                <div class="block block-rounded">
-                      <div class="block-header block-header-default">
-                          <h3 class="block-title">Packet Count by Destination IP (Top 5)</h3>
-                      </div>
-                      <div class="block-content block-content-full text-center">
-                          <form name="countbydst_filter" id="pcbydst_filter">
-                          <div class="row" style="vertical-align:center">
-                              <div class="col-lg-4 col-xl-3">
                                 <div class="mb-4">
-                                  <select class="form-select" id="dstip_top" name="srcip">
-                                      <option value="5">Top 5</option>
-                                      <option value="10">Top 10</option>
-                                      <option value="15">Top 15</option>
+                                  <select class="form-select" id="loc" name="loc">
+                                      <option value="src">Source IP</option>
+                                      <option value="dst">Destination IP</option>
                                   </select>
                                 </div>
                               </div>
                               <div class="col-lg-4 col-xl-3">
-                                  <button type="button" class="btn btn-secondary" type="submit" for="countbydst_filter">Submit</button>
+                                  <button type="button" class="btn btn-secondary" type="submit" for="countbyip_filter" onclick="filter();">Submit</button>
                               </div>
                           </div>
                           </form>
                           <div class="py-1">
                               <!-- Bars Chart Container -->
-                              <canvas id="PacketByDstip"></canvas>
+                              <canvas id="PacketByIp"></canvas>
                           </div>
                       </div>
                 </div>
@@ -207,11 +177,11 @@
 
 {% block additional_js %}
     <script>
-        var donut2_data = JSON.parse('{{ ip | safe}}');
         var donut1_data = JSON.parse('{{ proto | safe }}');
-        var packetbysrcip_data = JSON.parse('{{ packet_srcip | safe }}');
-        var packetbydstip_data = JSON.parse('{{ packet_dstip | safe }}');
+        var donut2_data = JSON.parse('{{ tcp_flags | safe}}');
         var packetbytime_data = JSON.parse('{{ packet_time | safe }}');
+
+        var packetbyip_data = {{ packetc_ip | safe }};
     </script>
     <!-- Page JS Plugins -->
     <script src="{{ url_for('static', filename='js/plugins/chart.min.js') }}"></script>
@@ -220,7 +190,7 @@
     <script src="{{ url_for('static', filename='js/donut1.js') }}" async></script>
     <script src="{{ url_for('static', filename='js/donut2.js') }}" async></script>
     <script src="{{ url_for('static', filename='js/barchart.js') }}" async></script>
-    <script src="{{ url_for('static', filename='js/PacketBySrcip.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/PacketByDstip.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/CountByIp.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/CountByIp_filter.js') }}" defer></script>
 
 {% endblock additional_js %}

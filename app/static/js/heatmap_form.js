@@ -1,5 +1,3 @@
-var form = document.getElementById('hm_filter');
-
 function filter(){
     $.ajax({
         type:'POST',

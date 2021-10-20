@@ -1,16 +1,18 @@
 import json
 import os
-from os import system
+import re
 
-from pandas.io.parsers import TextParser
+import pandas as pd
+from os import system
 
 import logs
 import LoadData, ml
 import pcap
 
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, session
 
 app = Flask(__name__)
+app.secret_key = 'e3w5PGoP(P&I%1xm&ogiO#ckF7*DkI3X'
 
 temp_file = []
 
@@ -21,78 +23,38 @@ def allowed_file(filename):
 # Route for default page
 @app.route('/', methods=["POST", "GET"])
 def home():
-    return redirect('/dashboard')
+    if session.get("authFilename") is not None or session.get("histFilename") is not None or session.get("pcapFilename") is not None:
+        return redirect('/dashboard')
+    else:
+        return redirect('/upload')
 
 
-# Route for dashboard page
-@app.route('/dashboard')
-def dashboard():
-    mlclass = ml.ML_Prediction()
-    mlclass.load_model("model")
-    prediction = mlclass.prediction("./upload/temp.binetflow")
-    graph_data, table_data = pcap.pcap_analysis("./upload/temp.csv")
-    return render_template('dashboard.html', ml=prediction, ip=json.dumps(graph_data[1]),
-                           proto=json.dumps(graph_data[0]), total_packet=json.dumps(graph_data[5].get('Packets')),
-                           total_ip=json.dumps(graph_data[6].get('Unique_IP')), packet_srcip=json.dumps(graph_data[3]),
-                           packet_dstip=json.dumps(graph_data[4]), packet_time=json.dumps(graph_data[2]))
-
-
-@app.route('/pcap')
-def pcapdata():
-    graph_data, table_data = pcap.pcap_analysis("./upload/temp.csv")
-    return render_template('pcap_data.html', pcapdata=table_data)
-
-
-@app.route('/portcomm')
-def portcomm():
-    heatmap_data = LoadData.extract_data("./upload/temp.binetflow", "192.168.10.10", "172.16.1.2", 50, "byte")
-    graph_data, table_data = pcap.pcap_analysis("./upload/temp.csv")
-    return render_template('communication_visualization.html', port_count=json.dumps(heatmap_data), srcip_list=json.dumps(graph_data[7]),
-                           dstip_list=json.dumps(graph_data[8]))
-
-
-@app.route('/portcomm', methods=["POST"])
-def heatmapdata():
-    src_ip = str(request.form.get('srcip'))
-    dst_ip = request.form.get('dstip')
-    data_filter = request.form.get('filterdata')
-    heatmap_data = LoadData.extract_data("./upload/temp.binetflow", src_ip, dst_ip, 50, data_filter)
-    return json.dumps(heatmap_data)
-
-
-@app.route('/authlog')
-def authlog():
-    # Change file
-    log_data, col = logs.authlog("./Logs/auth.log")
-    return render_template('auth_logs.html', col=col, logdata=log_data)
-
-
-@app.route('/histlog')
-def histlog():
-    log_data, col = logs.histlog("./Logs/hist.log")
-    return render_template('hist_logs.html', col=col, logdata=log_data)
-
-@app.route('/upload-process', methods=["POST","GET"])
+@app.route('/upload-process', methods=["POST", "GET"])
 def upload_process():
     data = request.files['file']
-    path = "Logs/"
-    files = os.listdir(path)
-    print(files)
-    if allowed_file(data.filename) and len(temp_file) < 3:
+    path = "upload/"
+
+    if allowed_file(data.filename) and len(temp_file) < 3:  # temp_file will always be 1 if i drag one by one
         temp_file.append(data)
-        if data.filename.rsplit('.', 1)[1].lower() == "log":
-            if len(files) == 0:
-                data.save("Logs/auth.log")
-            else:
-                data.save("Logs/hist.log")
-        else:
-            data.save("upload/"+data.filename)
+        # AUTH LOG
+        if re.match(".*auth\.log", data.filename.lower()):
+            data.save(path + data.filename)
+            session['authFilename'] = path + data.filename
+        # HIST LOG
+        elif re.match(".*history\.log", data.filename.lower()):
+            data.save(path + data.filename)
+            session['histFilename'] = path + data.filename
+        # PCAP FILE
+        elif re.match(".*\.pcapng", data.filename.lower()):
+            data.save("upload/" + data.filename)
+            session['pcapFilename'] = "upload/" + data.filename
         return render_template('upload.html')
     else:
         return redirect('upload.html')
 
+
 # Route for upload page
-@app.route('/upload-complete', methods=["POST","GET"])
+@app.route('/upload-complete', methods=["POST", "GET"])
 def upload_complete():
     check = None
     path = "upload/"
@@ -103,7 +65,7 @@ def upload_complete():
             for filename in files:
                 for fileobject in temp_file:
                     if fileobject.filename != filename:
-                        os.remove(path+filename)
+                        os.remove(path + filename)
     except:
         pass
 
@@ -111,21 +73,20 @@ def upload_complete():
         if file.filename.rsplit('.', 1)[1].lower() == "pcapng":
             check = 1
             break
-            
+
     if len(temp_file) != 0 and check != None:
         for file in temp_file:
             if file.filename.rsplit('.', 1)[1].lower() == "pcapng":
-
-
                 # require tshark
                 # require argus-server
-                # saved in a folder called upload(change name if needs be) 
-                system("tshark -r upload/" + file.filename + " -T fields -E header=y -E separator=, -E occurrence=a -E quote=s" 
-                " -e frame.time -e _ws.col.Protocol -e _ws.col.Length -e tcp.flags -e ip.src -e tcp.srcport -e udp.srcport -e ip.dst" 
-                " -e tcp.dstport -e udp.dstport -e _ws.col.Info > upload/temp.csv")
+                system(
+                    "tshark -r upload/" + file.filename + " -T fields -E header=y -E separator=, -E occurrence=a -E quote=s"
+                                                          " -e frame.time -e _ws.col.Protocol -e _ws.col.Length -e tcp.flags -e ip.src -e tcp.srcport -e udp.srcport -e ip.dst"
+                                                          " -e tcp.dstport -e udp.dstport -e _ws.col.Info > upload/temp.csv")
 
-                #precreate an empty asd.biargus file, idk why also, but kk say do it
-                system("argus -F utils/argus.conf -r upload/" + file.filename + " -w temp.biargus | ra -r temp.biargus -n -F utils/ra.conf -Z b > upload/temp.binetflow")
+                # precreate an empty asd.biargus file, idk why also, but kk say do it
+                system(
+                    "argus -F utils/argus.conf -r upload/" + file.filename + " -w temp.biargus | ra -r temp.biargus -n -F utils/ra.conf -Z b > upload/temp.binetflow")
 
         temp_file.clear()
         return redirect('/dashboard')
@@ -133,47 +94,100 @@ def upload_complete():
         temp_file.clear()
         return render_template('upload.html')
 
+
 # Route for upload page
-@app.route('/upload', methods=["POST","GET"])
+@app.route('/upload', methods=["POST", "GET"])
 def upload():
+    if session.get("authFilename") is None or session.get("histFilename") is None or session.get(
+            "pcapFilename") is None:
+        return render_template('upload.html')
+    else:
+        return redirect('/dashboard')
 
-    return render_template('upload.html')
-    pcap_file = request.files['pcap']
-    log_file = request.files['file']
-    log_file2 = request.files['file2']
 
-    
-
-    # pcap save
-    if pcap_file.filename != '':
-        
-        pcap_file.save("upload/"+pcap_file.filename)
-
-        # require tshark
-        # require argus-server
-        # saved in a folder called upload(change name if needs be) 
-        system("tshark -r upload/" + pcap_file.filename + " -T fields -E header=y -E separator=, -E occurrence=a -E quote=s" 
-        " -e frame.time -e _ws.col.Protocol -e _ws.col.Length -e tcp.flags -e ip.src -e tcp.srcport -e udp.srcport -e ip.dst" 
-        " -e tcp.dstport -e udp.dstport -e _ws.col.Info > upload/temp.csv")
-
-        #precreate an empty asd.biargus file, idk why also, but kk say do it
-        system("argus -F utils/argus.conf -r upload/" + pcap_file.filename + " -w temp.biargus | ra -r temp.biargus -n -F utils/ra.conf -Z b > upload/temp.binetflow")
-
-    # log file 1 save
-    if log_file.filename != '':
-        log_file.save("upload/"+log_file.filename)
-
-    # log file 2 save
-    if log_file2.filename != '':
-        log_file2.save("upload/"+log_file2.filename)
-
+# Route for upload page
+@app.route('/reupload', methods=["POST"])
+def reupload():
+    if session.get("authFilename") is not None:
+        session.pop("authFilename")
+    if session.get("histFilename") is not None:
+        session.pop("histFilename")
+    if session.get("pcapFilename") is not None:
+        session.pop("pcapFilename")
     return render_template('upload.html')
 
-'''
-<form action = "/json" method = "POST" enctype = "multipart/form-data">
-    <input type = "file" name = "pcap" />
-    <input type = "file" name = "file" />
-    <input type = "file" name = "file2" />
-    <input type = "submit"/>
-</form>
-'''
+# Route for dashboard page
+@app.route('/dashboard')
+def dashboard():
+    if session.get("pcapFilename") is None:
+        return redirect('/upload')
+    else:
+        df = pd.read_csv("./upload/temp.csv", encoding='utf-8', quotechar="'")
+        mlclass = ml.ML_Prediction()
+        mlclass.load_model("model")
+        prediction = mlclass.prediction("./upload/temp.binetflow")
+        graph_data = pcap.analysis_data_pcap(df)
+        count_ip = pcap.pack_count_ip_pcap(df, 5, "src")
+        return render_template('dashboard.html', ml=prediction, proto=json.dumps(graph_data[0]), tcp_flags=json.dumps(graph_data[1]),
+                               packet_time=json.dumps(graph_data[2]), total_packet=json.dumps(graph_data[3].get('Packets')),
+                               total_ip=json.dumps(graph_data[4].get('Unique_IP')), packetc_ip=count_ip)
+
+
+@app.route('/dashboard', methods=["POST"])
+def countip():
+    top = request.form.get('packetc_ip')
+    loc = request.form.get('loc')
+    df = pd.read_csv("./upload/temp.csv", encoding='utf-8', quotechar="'")
+    data = pcap.pack_count_ip_pcap(df, int(top), loc)
+    return data
+
+
+@app.route('/pcap')
+def pcapdata():
+    if session.get("pcapFilename") is None:
+        return redirect('/upload')
+    else:
+        df = pd.read_csv("./upload/temp.csv", encoding='utf-8', quotechar="'")
+        table_data = pcap.table_pcap(df)
+        return render_template('pcap_data.html', pcapdata=table_data)
+
+
+@app.route('/portcomm')
+def portcomm():
+    if session.get("pcapFilename") is None:
+        return redirect('/upload')
+    else:
+        df = pd.read_csv("./upload/temp.csv", encoding='utf-8', quotechar="'")
+        heatmap_data = LoadData.extract_data("./upload/temp.binetflow", "192.168.10.10", "172.16.1.2", 50, "byte")
+        src, dst = pcap.comb_ip_pcap(df)
+        return render_template('communication_visualization.html', port_count=json.dumps(heatmap_data), srcip_list=src,
+                               dstip_list=dst)
+
+
+@app.route('/portcomm', methods=["POST"])
+def heatmapdata():
+    src_ip = str(request.form.get('srcip'))
+    dst_ip = str(request.form.get('dstip'))
+    data_filter = request.form.get('filterdata')
+    heatmap_data = LoadData.extract_data("./upload/temp.binetflow", src_ip, dst_ip, 50, data_filter)
+    return json.dumps(heatmap_data)
+
+
+@app.route('/authlog')
+def authlog():
+    if session.get("authFilename") is None:
+        return redirect('/dashboard')
+    else:
+        print(session['authFilename'])
+        # Change file
+        log_data, col = logs.authlog(session['authFilename'])
+        return render_template('auth_logs.html', col=col, logdata=log_data)
+
+
+@app.route('/histlog')
+def histlog():
+    if session.get("histFilename") is None:
+        return redirect('/dashboard')
+    else:
+        log_data, col = logs.histlog(session['histFilename'])
+        return render_template('hist_logs.html', col=col, logdata=log_data)
