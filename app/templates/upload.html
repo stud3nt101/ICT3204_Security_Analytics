@@ -11,9 +11,6 @@
 <!--main content start-->
 {% block content %}
 
-{% block header %}
-{% endblock header %}
-
 <!-- Main Container -->
 <main id="main-container">
     <!-- Hero -->
@@ -22,7 +19,7 @@
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
                 <div class="flex-grow-1">
                     <h1 class="h3 fw-bold mb-2">Upload</h1>
-                    <h2 class="fs-base lh-base fw-medium text-muted mb-0">Upload data for analysis, kindly follow this format (Pcap -> Auth logs -> History logs)</h2>
+                    <h2 class="fs-base lh-base fw-medium text-muted mb-0">Accepts PCAP file, Auth log and History log</h2>
                 </div>
             </div>
         </div>
@@ -38,22 +35,6 @@
             </div>
             <div class="block-content block-content-full">
                 <div class="col-lg-12 space-y-2">
-                    <div class="row">
-                        <!-- Dropdown to choose data source-->
-                        <div class="col-12">
-                            <div class="dropdown col">
-                                <button type="button" class="btn btn-outline-secondary dropdown-toggle col-12" id="dropdown-default-outline-secondary" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Data source - PCAP file is mandatory; Log files are optional
-                                </button>
-                                <div class="dropdown-menu fs-sm col-12" aria-labelledby="dropdown-default-outline-secondary">
-                                    <a class="dropdown-item" href="javascript:void(0)">PCAP</a>
-                                    <a class="dropdown-item" href="javascript:void(0)">SSH/Auth Log (Optional)</a>
-                                    <div class="dropdown-divider"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--END Dropdown -->
-                    </div>
                     <!-- Dropzone (functionality is auto initialized by the plugin itself in js/plugins/dropzone/dropzone.min.js) -->
                     <!-- For more info and examples you can check out http://www.dropzonejs.com/#usage -->
                     <div class="mb-4 pb-2"></div>
