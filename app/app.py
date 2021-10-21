@@ -149,7 +149,7 @@ def timeline():
         return redirect('/upload')
     else:
         df = pd.read_csv("./upload/temp.csv", encoding='utf-8', quotechar="'")
-        timeline_data = pcap.ip_interval(df, "192.168.30.31")
+        timeline_data = pcap.ip_interval(df, "0.0.0.0")
         src, dst = pcap.comb_ip_pcap(df)
         list_ip = list(set(src + dst))
         list_ip.sort()
