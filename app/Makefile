@@ -14,7 +14,7 @@ run:
 
 install:
 	@echo "\nInstalling pip requirements"
-	pip3 install --quiet --no-cache-dir -r requirements.txt
+	pip3 install --quiet --no-cache-dir -y -r requirements.txt
 	
 	@echo "\nInstalling tshark and argus-server"
 	sudo apt install tshark
