@@ -108,6 +108,7 @@ def extract_data(fileName, SrcAddr, DstAddr, top = None, key = None):
     ls = 0
 
     data = {}
+    sort_list = []
 
     for column in df:
         if column not in header:
@@ -139,6 +140,8 @@ def extract_data(fileName, SrcAddr, DstAddr, top = None, key = None):
                 data[f"{str(Sport)} -> {str(Dport)}"] = {"packet": (cur_packets + int(totP)), "byte": (cur_bytes + int(totB)), "dur": str((cur_dur + Decimal(dur))*1000)}
                 if key == 'dur': sort_list = sorted(data.items(), key=lambda x: Decimal(x[1][key]), reverse=True)
                 if key != None and key != 'dur': sort_list = sorted(data.items(), key=lambda x:x[1][key], reverse=True)
+
+    if bool(data) == False: return None
 
     #If slicing and key is specified
     if top != None:
