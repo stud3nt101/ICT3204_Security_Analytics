@@ -28,8 +28,16 @@ def table_pcap(df) -> dict:
 def comb_ip_pcap(df) -> list:
     srcip_list = df['ip.src'].unique()
     dstip_list = df['ip.dst'].unique()
-    
-    return srcip_list, dstip_list
+
+    # Clean list of unique src IP
+    srcip_cleaned = [x for x in srcip_list if str(x) != 'nan'] # Remove nan
+    srcip_cleaned.sort()
+
+    # Clean list of unique dst IP
+    dstip_cleaned = [x for x in dstip_list if str(x) != 'nan'] # Remove nan
+    dstip_cleaned.sort()
+
+    return srcip_cleaned, dstip_cleaned
 
 
 #  Packet count by IP address
