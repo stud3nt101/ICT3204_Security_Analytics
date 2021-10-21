@@ -4,11 +4,11 @@
 An analytic tool to help packet analyser deduce potential malicious packets running through the network
 
 ## Requirements
-[![Ubuntu](https://img.shields.io/badge/Ubuntu-21.04-green)]
-[![Python](https://img.shields.io/badge/Python-3.9.5-blue)]
-[![Argus](https://img.shields.io/badge/argus--server-2%3A3.0.8.2--2ubuntu1-blue)]
-[![Tshark](https://img.shields.io/badge/tshark-3.4.4--1ubuntu1-blue)]
-[![make](https://img.shields.io/badge/make-4.3--4ubuntu1-blue)]
+![Ubuntu](https://img.shields.io/badge/Ubuntu-21.04-green)
+![Python](https://img.shields.io/badge/Python-3.9.5-blue)
+![Argus](https://img.shields.io/badge/argus--server-2%3A3.0.8.2--2ubuntu1-blue)
+![Tshark](https://img.shields.io/badge/tshark-3.4.4--1ubuntu1-blue)
+![make](https://img.shields.io/badge/make-4.3--4ubuntu1-blue)
 
 ## Features
 - 
