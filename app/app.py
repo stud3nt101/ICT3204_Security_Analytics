@@ -84,7 +84,7 @@ def upload_complete():
                                                           " -e frame.time -e _ws.col.Protocol -e _ws.col.Length -e tcp.flags -e ip.src -e tcp.srcport -e udp.srcport -e ip.dst"
                                                           " -e tcp.dstport -e udp.dstport -e _ws.col.Info > upload/temp.csv")
 
-                # precreate an empty asd.biargus file, idk why also, but kk say do it
+                # Precreate an empty temp.biargus file
                 system(
                     "argus -F utils/argus.conf -r upload/" + file.filename + " -w temp.biargus | ra -r temp.biargus -n -F utils/ra.conf -Z b > upload/temp.binetflow")
 
