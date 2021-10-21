@@ -6,7 +6,7 @@ dataset = heatmap_data;
 
 function heatmap(datas){
     if (datas == null){
-        alert("No communication data found. Please try other combinations.")
+        alert("No communication data found. Please try other src & dst IP combinations.")
     }
     else{
         var keys = Object.keys(datas);
