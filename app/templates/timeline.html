@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block additional_css %}
+<!-- Stylesheets -->
+    <!-- Page JS Plugins CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.bootstrap5.min.css') }}">
+{% endblock additional_css %}
+
+<!--main content start-->
+{% block content %}
+
+{% block header %}
+{% endblock header %}
+
+<!-- Main Container -->
+<main id="main-container">
+    <!-- Page Content -->
+    <div class="content">
+        <!-- Chart.js Charts are initialized in js/pages/be_comp_charts.min.js which was auto compiled from _js/pages/be_comp_charts.js -->
+        <!-- For more info and examples you can check out http://www.chartjs.org/docs/ -->
+        <div class="row">
+            <div class="col-xl-12">
+                <!-- Bars Chart -->
+                <div class="block block-rounded">
+                      <div class="block-header block-header-default">
+                          <h3 class="block-title">Packet Count by Time (10 min interval)</h3>
+                      </div>
+                      <div class="block-content block-content-full text-center">
+                          <form name="packetbytime_filter" id="packettime" action="/dashboard" method="POST">
+                          <div class="row" style="vertical-align:center">
+                              <div class="col-lg-4 col-xl-3">
+                                <div class="mb-4">
+                                  <select class="form-select" id="tip" name="timelineip">
+                                      {% for data in ip_list %}
+                                      <option value={{data}}>{{data}}</option>
+                                      {% endfor %}
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-lg-4 col-xl-3">
+                                  <button type="button" class="btn btn-secondary" type="submit" for="packetbytime_filter" onclick="timeline_filter();">Submit</button>
+                              </div>
+                          </div>
+                          </form>
+                          <div class="py-1">
+                              <!-- Bars Chart Container -->
+                              <canvas id="PacketByTime"></canvas>
+                          </div>
+                      </div>
+                </div>
+                <!-- END Bars Chart -->
+            </div>
+        </div>
+    </div>
+    <!-- END Page Content -->
+</main>
+<!-- END Main Container -->
+{% endblock content %}
+
+{% block additional_js %}
+    <script>
+        var packetbytime_data = JSON.parse('{{ packet_time | safe }}');
+    </script>
+    <!-- Page JS Plugins -->
+    <script src="{{ url_for('static', filename='js/plugins/chart.min.js') }}"></script>
+
+    <!-- Page JS Code -->
+    <script src="{{ url_for('static', filename='js/barchart.js') }}" async></script>
+    <script src="{{ url_for('static', filename='js/timeline_filter.js') }}" async></script>
+
+{% endblock additional_js %}

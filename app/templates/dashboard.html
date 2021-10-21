@@ -115,21 +115,6 @@
                 <!-- Bars Chart -->
                 <div class="block block-rounded">
                       <div class="block-header block-header-default">
-                          <h3 class="block-title">Packet Count by Time (10 min interval)</h3>
-                      </div>
-                      <div class="block-content block-content-full text-center">
-                          <div class="py-1">
-                              <!-- Bars Chart Container -->
-                              <canvas id="PacketByTime"></canvas>
-                          </div>
-                      </div>
-                </div>
-                <!-- END Bars Chart -->
-            </div>
-            <div class="col-xl-12">
-                <!-- Bars Chart -->
-                <div class="block block-rounded">
-                      <div class="block-header block-header-default">
                           <h3 class="block-title">Packet Count by IP</h3>
                       </div>
                       <div class="block-content block-content-full text-center">
@@ -179,8 +164,6 @@
     <script>
         var donut1_data = JSON.parse('{{ proto | safe }}');
         var donut2_data = JSON.parse('{{ tcp_flags | safe}}');
-        var packetbytime_data = JSON.parse('{{ packet_time | safe }}');
-
         var packetbyip_data = {{ packetc_ip | safe }};
     </script>
     <!-- Page JS Plugins -->
@@ -189,7 +172,6 @@
     <!-- Page JS Code -->
     <script src="{{ url_for('static', filename='js/donut1.js') }}" async></script>
     <script src="{{ url_for('static', filename='js/donut2.js') }}" async></script>
-    <script src="{{ url_for('static', filename='js/barchart.js') }}" async></script>
     <script src="{{ url_for('static', filename='js/CountByIp.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/CountByIp_filter.js') }}" defer></script>
 

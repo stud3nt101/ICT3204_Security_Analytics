@@ -129,18 +129,40 @@ def dashboard():
         graph_data = pcap.analysis_data_pcap(df)
         count_ip = pcap.pack_count_ip_pcap(df, 5, "src")
         return render_template('dashboard.html', ml=prediction, proto=json.dumps(graph_data[0]), tcp_flags=json.dumps(graph_data[1]),
-                               packet_time=json.dumps(graph_data[2]), total_packet=json.dumps(graph_data[3].get('Packets')),
-                               total_ip=json.dumps(graph_data[4].get('Unique_IP')), packetc_ip=count_ip)
+                               total_packet=json.dumps(graph_data[2].get('Packets')), total_ip=json.dumps(graph_data[3].get('Unique_IP')),
+                               packetc_ip=count_ip)
 
 
 @app.route('/dashboard', methods=["POST"])
 def countip():
+    df = pd.read_csv("./upload/temp.csv", encoding='utf-8', quotechar="'")
     top = request.form.get('packetc_ip')
     loc = request.form.get('loc')
-    df = pd.read_csv("./upload/temp.csv", encoding='utf-8', quotechar="'")
     data = pcap.pack_count_ip_pcap(df, int(top), loc)
     return data
 
+
+# Route for timeline page
+@app.route('/timeline')
+def timeline():
+    if session.get("pcapFilename") is None:
+        return redirect('/upload')
+    else:
+        df = pd.read_csv("./upload/temp.csv", encoding='utf-8', quotechar="'")
+        timeline_data = pcap.ip_interval(df, "192.168.30.31")
+        src, dst = pcap.comb_ip_pcap(df)
+        list_ip = list(set(src + dst))
+        list_ip.sort()
+
+        return render_template('timeline.html', packet_time=json.dumps(timeline_data), ip_list=list_ip)
+
+
+@app.route('/timeline', methods=["POST"])
+def packetipfilter():
+    df = pd.read_csv("./upload/temp.csv", encoding='utf-8', quotechar="'")
+    tip = request.form.get('packet_time')
+    data = pcap.ip_interval(df, tip)
+    return data
 
 @app.route('/pcap')
 def pcapdata():

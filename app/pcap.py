@@ -14,9 +14,8 @@ Function 4: Occurace of a single ip address every 10 min
 Function 5: List of dictionary in the following index order.
     0. Packet count by protocol (HTTP, FTP, ...)
     1. Packet count by TCP flag (SYN, ACK, ...)
-    2. Packet count by time, in 10 min interval
-    3. Total number of packets
-    4. Total number of unique IP addresses
+    2. Total number of packets
+    3. Total number of unique IP addresses
 '''
 
 
@@ -58,7 +57,7 @@ def pack_count_ip_pcap(df, top, loc) -> dict:
     
     return dict_ipcount
 
-# Occurace of a single ip address every 10 min
+# Occurrence of a single ip address every 10 min
 def ip_interval(df, ip_addr) -> dict:
     # Creating the correct datetime formate for processing
     df['frame.time'] = df['frame.time'].str.replace('PDT','').str.strip()
@@ -79,6 +78,7 @@ def ip_interval(df, ip_addr) -> dict:
     interval_count_df['Time'] = interval_count_df['Time'].dt.strftime('%Y-%m-%d %r')
     interval_count_dict = dict(interval_count_df.values)
 
+    print(interval_count_dict)
     return interval_count_dict
 
 def analysis_data_pcap(df) -> dict:
