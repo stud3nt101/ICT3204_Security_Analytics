@@ -62,7 +62,7 @@
                     <!-- Side Navigation -->
                     <div class="content-side">
                         <ul class="nav-main">
-                            {% if not session['pcapFilename'] %}
+                            {% if not session['pcapFilename'] and not session['authFilename'] and not session['histFilename']%}
                             <li class="nav-main-item">
                                 <a class="nav-main-link" href="{{ url_for('upload') }}">
                                     <i class="nav-main-link-icon fa fa-upload"></i>

@@ -31,23 +31,36 @@ def home():
 
 @app.route('/upload-process', methods=["POST", "GET"])
 def upload_process():
-    data = request.files['file']
-    path = "upload/"
+    # Get all files uploaded
+    file_list = request.files.getlist("file")
+    path = "./upload/"
+    check = 0  # To check that the files uploaded meets the requirements
 
-    if allowed_file(data.filename) and len(temp_file) < 3:  # temp_file will always be 1 if i drag one by one
-        temp_file.append(data)
+    # Initialize session as empty string
+    session['authFilename'] = ""
+    session['histFilename'] = ""
+    session['pcapFilename'] = ""
+
+    for files in file_list:
+        if allowed_file(files.filename) and len(temp_file) < 3:
+            temp_file.append(files)
+            files.save(path + files.filename)
+            check = 1
+        else:
+            check = 0
+
+    # Create session for files found
+    for data in temp_file:
         # AUTH LOG
         if re.match(".*auth\.log", data.filename.lower()):
-            data.save(path + data.filename)
             session['authFilename'] = path + data.filename
         # HIST LOG
         elif re.match(".*history\.log", data.filename.lower()):
-            data.save(path + data.filename)
             session['histFilename'] = path + data.filename
         # PCAP FILE
         elif re.match(".*\.pcapng", data.filename.lower()):
-            data.save("upload/" + data.filename)
-            session['pcapFilename'] = "upload/" + data.filename
+            session['pcapFilename'] = path + data.filename
+    if check == 1:
         return render_template('upload.html')
     else:
         return redirect('upload.html')
@@ -57,17 +70,6 @@ def upload_process():
 @app.route('/upload-complete', methods=["POST", "GET"])
 def upload_complete():
     check = None
-    path = "upload/"
-    files = os.listdir(path)
-
-    try:
-        if len(temp_file) != 0:
-            for filename in files:
-                for fileobject in temp_file:
-                    if fileobject.filename != filename:
-                        os.remove(path + filename)
-    except:
-        pass
 
     for file in temp_file:
         if file.filename.rsplit('.', 1)[1].lower() == "pcapng":
@@ -92,7 +94,12 @@ def upload_complete():
         return redirect('/dashboard')
     else:
         temp_file.clear()
-        return render_template('upload.html')
+        if session.get("authFilename") is not '':
+            return redirect('/authlog')
+        elif session.get("histFilename") is not '':
+            return redirect('/histlog')
+        else:
+            return render_template('upload.html')
 
 
 # Route for upload page
@@ -105,9 +112,10 @@ def upload():
         return redirect('/dashboard')
 
 
-# Route for upload page
+# Route for reuploading files page
 @app.route('/reupload', methods=["POST"])
 def reupload():
+    # Pop all existing sessions
     if session.get("authFilename") is not None:
         session.pop("authFilename")
     if session.get("histFilename") is not None:
@@ -116,16 +124,20 @@ def reupload():
         session.pop("pcapFilename")
     return render_template('upload.html')
 
+
 # Route for dashboard page
 @app.route('/dashboard')
 def dashboard():
     if session.get("pcapFilename") is None:
         return redirect('/upload')
     else:
+        # load pandas dataframe
         df = pd.read_csv("./upload/temp.csv", encoding='utf-8', quotechar="'")
+        # Run machine learning algorithm
         mlclass = ml.ML_Prediction()
         mlclass.load_model("model")
         prediction = mlclass.prediction("./upload/temp.binetflow")
+        # Get data to plot graphs and cards
         graph_data = pcap.analysis_data_pcap(df)
         count_ip = pcap.pack_count_ip_pcap(df, 5, "src")
         return render_template('dashboard.html', ml=prediction, proto=json.dumps(graph_data[0]), tcp_flags=json.dumps(graph_data[1]),
@@ -135,6 +147,7 @@ def dashboard():
 
 @app.route('/dashboard', methods=["POST"])
 def countip():
+    # Response to AJAX function for CountByIp_filter.js
     df = pd.read_csv("./upload/temp.csv", encoding='utf-8', quotechar="'")
     top = request.form.get('packetc_ip')
     loc = request.form.get('loc')
@@ -150,6 +163,7 @@ def timeline():
     else:
         df = pd.read_csv("./upload/temp.csv", encoding='utf-8', quotechar="'")
         timeline_data = pcap.ip_interval(df, "0.0.0.0")
+        # Get combined list of all unique src and dst IP addresses
         src, dst = pcap.comb_ip_pcap(df)
         list_ip = list(set(src + dst))
         list_ip.sort()
@@ -159,11 +173,14 @@ def timeline():
 
 @app.route('/timeline', methods=["POST"])
 def packetipfilter():
+    # Response to AJAX function for timeline_filter.js
     df = pd.read_csv("./upload/temp.csv", encoding='utf-8', quotechar="'")
     tip = request.form.get('packet_time')
     data = pcap.ip_interval(df, tip)
     return data
 
+
+# Route to view all pcap file raw data
 @app.route('/pcap')
 def pcapdata():
     if session.get("pcapFilename") is None:
@@ -188,6 +205,7 @@ def portcomm():
 
 @app.route('/portcomm', methods=["POST"])
 def heatmapdata():
+    # Response to AJAX function for heatmap_form.js
     src_ip = str(request.form.get('srcip'))
     dst_ip = str(request.form.get('dstip'))
     data_filter = request.form.get('filterdata')
@@ -195,17 +213,18 @@ def heatmapdata():
     return json.dumps(heatmap_data)
 
 
+# Route to view all auth log raw data
 @app.route('/authlog')
 def authlog():
     if session.get("authFilename") is None:
         return redirect('/dashboard')
     else:
-        print(session['authFilename'])
         # Change file
         log_data, col = logs.authlog(session['authFilename'])
         return render_template('auth_logs.html', col=col, logdata=log_data)
 
 
+# Route to view all hist log raw data
 @app.route('/histlog')
 def histlog():
     if session.get("histFilename") is None:
