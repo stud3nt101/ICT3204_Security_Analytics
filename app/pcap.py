@@ -60,7 +60,7 @@ def pack_count_ip_pcap(df, top, loc) -> dict:
 # Occurrence of a single ip address every 10 min
 def ip_interval(df, ip_addr) -> dict:
     # Creating the correct datetime formate for processing
-    df['frame.time'] = df['frame.time'].str.replace('PDT','').str.strip()
+    df['frame.time'] = df['frame.time'].str.replace('\+08','').str.strip()
     df['frame.time'] = pd.to_datetime(df['frame.time'], format='%b %d, %Y %H:%M:%S.%f')
     
     # Recreating a new dataframe to store combine ip address of src & dst
